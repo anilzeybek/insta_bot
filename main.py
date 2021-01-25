@@ -6,6 +6,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 from time import sleep
 import random
+import sqlite3
 
 
 USERS_LIST = ["kadikoybelediye"]
@@ -18,6 +19,7 @@ login_page = LoginPage(browser)
 user_page = UserPage(browser)
 post_page = PostPage(browser)
 actions = ActionChains(browser)
+conn = sqlite3.connect('database.db')
 
 
 def give_like(target_users):

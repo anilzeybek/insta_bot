@@ -3,3 +3,4 @@ geckodriver
 geckodriver.log
 .vscode
 .idea
+*.db
