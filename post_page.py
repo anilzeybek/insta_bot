@@ -21,5 +21,10 @@ class PostPage:
         return usernames
 
     def like_post(self):
-        # TODO: implement
-        pass
+        try:
+            like_button = self.browser.find_element_by_xpath("//span/*[name()='svg'][@aria-label='Like']")
+            like_button.click()
+        except Exception as e:
+            pass
+
+        sleep(3)

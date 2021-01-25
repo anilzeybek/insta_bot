@@ -20,7 +20,13 @@ class UserPage:
         line_index = post_number // 3 + 1
         post_index = (post_number - 1) % 3 + 1
 
-        post1 = self.browser.find_element_by_xpath(f"//article/div[1]/div/div[{line_index}]/div[{post_index}]")
-        post1.click()
+        post = self.browser.find_element_by_xpath(f"//article/div[1]/div/div[{line_index}]/div[{post_index}]")
+        post.click()
 
         sleep(4)
+
+    def send_follow_request(self):
+        follow_button = self.browser.find_element_by_xpath("//button[@type='button' and text()='Follow']")
+        follow_button.click()
+
+        sleep(3)

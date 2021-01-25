@@ -8,7 +8,7 @@ from time import sleep
 import random
 
 
-USERS_LIST = ["mertkaangul"]
+USERS_LIST = ["matthewkheafy"]
 KEYWORDS = ["the"]
 
 browser = webdriver.Firefox(executable_path="./geckodriver")
@@ -26,14 +26,18 @@ def give_like(target_users):
 
         if not locked_acc:
             post_no = random.randint(1, 5)
-            user_page.go_post(post_no)
+            print(f"Liking post {post_no}")
 
+            user_page.go_post(post_no)
             post_page.like_post()
+        else:
+            user_page.send_follow_request()
 
 
 def check_posts(username):
     locked_acc = user_page.go_user(username)
 
+    # TODO: sor, hedef listesindeki hesap gizliyse takip et?
     if not locked_acc:
         for post_no in range(1, 6):
             user_page.go_post(post_no)
@@ -44,7 +48,7 @@ def check_posts(username):
 
 
 def main():
-    login_page.login("anil.z", ".Klmyok123")
+    login_page.login("niyazitecik", ".Qwerty1234")
     for username in USERS_LIST:
         check_posts(username)
 
