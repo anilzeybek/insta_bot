@@ -5,9 +5,10 @@ from post_page import PostPage
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 from time import sleep
+import random
 
 
-USERS_LIST = ["matthewkheafy"]
+USERS_LIST = ["mertkaangul"]
 KEYWORDS = ["the"]
 
 browser = webdriver.Firefox(executable_path="./geckodriver")
@@ -20,18 +21,26 @@ actions = ActionChains(browser)
 
 
 def give_like(target_users):
-    print(target_users)
+    for user in target_users:
+        locked_acc = user_page.go_user(user)
+
+        if not locked_acc:
+            post_no = random.randint(1, 5)
+            user_page.go_post(post_no)
+
+            post_page.like_post()
 
 
 def check_posts(username):
-    user_page.go_user(username)
+    locked_acc = user_page.go_user(username)
 
-    for post_no in range(1, 6):
-        user_page.go_post(post_no)
-        target_users = post_page.find_target_users(KEYWORDS)
+    if not locked_acc:
+        for post_no in range(1, 6):
+            user_page.go_post(post_no)
+            target_users = post_page.find_target_users(KEYWORDS)
 
-        give_like(target_users)
-        user_page.go_user(username)
+            give_like(target_users)
+            user_page.go_user(username)
 
 
 def main():
