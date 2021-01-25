@@ -8,7 +8,7 @@ class PostPage:
         self.logged_user = logged_user
 
     def _load_all_comments(self):
-        while True:
+        for _ in range(15):
             load_comments_button = self.browser.find_elements_by_xpath("//span[@aria-label='Load more comments']")
 
             if load_comments_button:

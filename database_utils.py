@@ -27,6 +27,7 @@ def add_blacklist(account):
     conn.commit()
 
     print(f"{account} has been added to blacklist")
+    print("--------------\n")
 
 
 def add_blocker(blocker_account, blocked_account):
@@ -40,7 +41,7 @@ def add_blocker(blocker_account, blocked_account):
 def in_blacklist(account):
     c.execute("SELECT * FROM blacklist WHERE account = ?", (account,))
     if c.fetchone():
-        print(f"{account} is in blacklist, so skipping")
+        print(f"{account} is in blacklist, so skipping\n")
         return True
 
     return False
