@@ -18,12 +18,13 @@ class LoginPage:
 
         sleep(3)
 
-        now_now_button = self.browser.find_element_by_xpath("//button[@type='button' and text()='Not Now']")
-        now_now_button.click()
+        not_now_button = self.browser.find_element_by_xpath("//button[@type='button' and text()='Not Now']")
+        not_now_button.click()
 
         sleep(3)
 
-        now_now_button = self.browser.find_element_by_xpath("//button[text()='Not Now']")
-        now_now_button.click()
+        not_now_button = self.browser.find_elements_by_xpath("//button[text()='Not Now']")
+        if not_now_button:
+            not_now_button[0].click()
 
         sleep(3)
