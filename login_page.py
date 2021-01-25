@@ -2,16 +2,19 @@ from time import sleep
 
 
 class LoginPage:
-    def __init__(self, browser):
+    def __init__(self, browser, username, password):
         self.browser = browser
         self.browser.get('https://www.instagram.com/')
 
-    def login(self, username, password):
+        self.username = username
+        self.password = password
+
+    def login(self):
         username_input = self.browser.find_element_by_css_selector("input[name='username']")
         password_input = self.browser.find_element_by_css_selector("input[name='password']")
 
-        username_input.send_keys(username)
-        password_input.send_keys(password)
+        username_input.send_keys(self.username)
+        password_input.send_keys(self.password)
 
         login_button = self.browser.find_element_by_xpath("//button[@type='submit']")
         login_button.click()

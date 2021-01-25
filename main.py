@@ -7,17 +7,22 @@ from selenium.webdriver.common.action_chains import ActionChains
 from time import sleep
 import random
 import sqlite3
+from database_utils import add_blacklist
 
 
-USERS_LIST = ["kadikoybelediye"]
+LOGIN_USER = "niyazitecik"
+LOGIN_PASSWORD = ".Qwerty1234"
+
+USERS_LIST = ["matthewkheafy"]
 KEYWORDS = ["the"]
 
 browser = webdriver.Firefox(executable_path="./geckodriver")
 browser.implicitly_wait(5)
 
-login_page = LoginPage(browser)
-user_page = UserPage(browser)
-post_page = PostPage(browser)
+login_page = LoginPage(browser, LOGIN_USER, LOGIN_PASSWORD)
+user_page = UserPage(browser, LOGIN_USER)
+post_page = PostPage(browser, LOGIN_USER)
+
 actions = ActionChains(browser)
 conn = sqlite3.connect('database.db')
 
@@ -28,18 +33,18 @@ def give_like(target_users):
 
         if not locked_acc:
             post_no = random.randint(1, 5)
-            print(f"Liking post {post_no}")
 
             user_page.go_post(post_no)
-            post_page.like_post()
+            post_page.like_post(user)
         else:
-            user_page.send_follow_request()
+            user_page.send_follow_request(user)
+
+        add_blacklist(user)
 
 
 def check_posts(username):
     locked_acc = user_page.go_user(username)
 
-    # TODO: sor, hedef listesindeki hesap gizliyse takip et?
     if not locked_acc:
         for post_no in range(1, 6):
             user_page.go_post(post_no)
@@ -50,7 +55,7 @@ def check_posts(username):
 
 
 def main():
-    login_page.login("niyazitecik", ".Qwerty1234")
+    login_page.login()
     for username in USERS_LIST:
         check_posts(username)
 
