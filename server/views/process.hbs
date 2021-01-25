@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="css/styles.css">
+    <title>Server</title>
+</head>
+
+<body>
+<header>
+    <a href="/">Çalışan botlar</a>
+    <a href="/about">Yeni bot oluştur</a>
+</header>
+
+
+<form>
+    <ul class="form-style-1">
+        <li>
+            <label>Giriş yapılacak hesap bilgileri</label>
+            <input type="text" class="field-divided" placeholder="Kullanıcı adı" id="username"/>
+            <input type="text" class="field-divided" placeholder="Şifre" id="password"/>
+        </li>
+        <li>
+            <label>Limitler</label>
+            <input type="text" class="field-divided" placeholder="Takip isteği limiti" id="requestLimit"/>
+            <input type="text" class="field-divided" placeholder="Beğeni limiti" id="likeLimit"/>
+        </li>
+        <li>
+            <label>Hedef instagram hesapları</label>
+            <textarea class="field-long field-textarea" id="targets"></textarea>
+        </li>
+        <li>
+            <label>Anahtar kelimeler</label>
+            <textarea class="field-long field-textarea" id="keywords"></textarea>
+        </li>
+        <li>
+            <input type="submit" value="Botu başlat!"/>
+        </li>
+    </ul>
+</form>
+
+<script src="js/client.js"></script>
+</body>
+
+</html>

@@ -1,6 +1,7 @@
-__pycache__
-geckodriver
-geckodriver.log
-.vscode
-.idea
-*.db
+**/__pycache__
+**/node_modules
+**/geckodriver
+**/geckodriver.log
+**/.vscode
+**/.idea
+**/*.db
