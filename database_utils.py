@@ -14,8 +14,8 @@ def add_like(liker_account, liked_account, liked_post):
 
 
 def add_follow_request(requester_account, requested_account):
-    x = (requester_account, requested_account)
-    c.execute("INSERT INTO follow_requests (requester_account, requested_account) VALUES (?, ?)", x)
+    x = (requester_account, requested_account, 0, 0)
+    c.execute("INSERT INTO follow_requests (requester_account, requested_account, accepted, declined) VALUES (?, ?, ?, ?)", x)
     conn.commit()
 
 
