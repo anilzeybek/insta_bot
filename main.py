@@ -8,7 +8,7 @@ from time import sleep
 import random
 
 
-USERS_LIST = ["matthewkheafy"]
+USERS_LIST = ["kadikoybelediye"]
 KEYWORDS = ["the"]
 
 browser = webdriver.Firefox(executable_path="./geckodriver")

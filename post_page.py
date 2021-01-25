@@ -5,8 +5,18 @@ class PostPage:
     def __init__(self, browser):
         self.browser = browser
 
+    def _load_all_comments(self):
+        while True:
+            load_comments_button = self.browser.find_elements_by_xpath("//span[@aria-label='Load more comments']")
+
+            if load_comments_button:
+                load_comments_button[0].click()
+                sleep(3)
+            else:
+                break
+
     def find_target_users(self, kw_list):
-        # TODO: only looks the initial comments, search for every comment
+        self._load_all_comments()
 
         usernames = []
         comments = self.browser.find_elements_by_xpath("//article/div[3]/div[1]/ul/ul")
