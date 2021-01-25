@@ -13,7 +13,6 @@ class UserPage:
 
         locked_acc = self.browser.find_elements_by_xpath("//h2[text()='This Account is Private']")
         if locked_acc:
-            print("account is locked")
             return True
 
         return False
@@ -24,8 +23,11 @@ class UserPage:
         line_index = post_number // 3 + 1
         post_index = (post_number - 1) % 3 + 1
 
-        post = self.browser.find_element_by_xpath(f"//article/div[1]/div/div[{line_index}]/div[{post_index}]")
-        post.click()
+        try:
+            post = self.browser.find_element_by_xpath(f"//article/div[1]/div/div[{line_index}]/div[{post_index}]")
+            post.click()
+        except Exception as e:
+            pass
 
         sleep(4)
 

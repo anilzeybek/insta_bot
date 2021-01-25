@@ -2,13 +2,9 @@ from selenium import webdriver
 from login_page import LoginPage
 from user_page import UserPage
 from post_page import PostPage
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.action_chains import ActionChains
-from time import sleep
 import random
 import sqlite3
-from database_utils import add_blacklist
-
+from database_utils import add_blacklist, in_blacklist
 
 LOGIN_USER = "niyazitecik"
 LOGIN_PASSWORD = ".Qwerty1234"
@@ -23,23 +19,23 @@ login_page = LoginPage(browser, LOGIN_USER, LOGIN_PASSWORD)
 user_page = UserPage(browser, LOGIN_USER)
 post_page = PostPage(browser, LOGIN_USER)
 
-actions = ActionChains(browser)
 conn = sqlite3.connect('database.db')
 
 
-def give_like(target_users):
+def like_or_follow_request(target_users):
     for user in target_users:
-        locked_acc = user_page.go_user(user)
+        if not in_blacklist(user):
+            locked_acc = user_page.go_user(user)
 
-        if not locked_acc:
-            post_no = random.randint(1, 5)
+            if not locked_acc:
+                post_no = random.randint(1, 5)
 
-            user_page.go_post(post_no)
-            post_page.like_post(user)
-        else:
-            user_page.send_follow_request(user)
+                user_page.go_post(post_no)
+                post_page.like_post(user)
+            else:
+                user_page.send_follow_request(user)
 
-        add_blacklist(user)
+            add_blacklist(user)
 
 
 def check_posts(username):
@@ -50,7 +46,7 @@ def check_posts(username):
             user_page.go_post(post_no)
             target_users = post_page.find_target_users(KEYWORDS)
 
-            give_like(target_users)
+            like_or_follow_request(target_users)
             user_page.go_user(username)
 
 
