@@ -2,7 +2,7 @@ const path = require('path')
 const express = require('express')
 const bodyParser = require('body-parser')
 const hbs = require('hbs')
-const createProcess = require("./createProcess")
+const {createProcess, getProcesses, exitProcess} = require("./processUtil")
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -19,19 +19,22 @@ app.use(express.static(publicDirPath))
 app.use(bodyParser.json())
 
 app.get('/', (req, res) => {
-    res.render("index")
+    const runningProcesses = getProcesses()
+    res.render("index", runningProcesses)
 })
 
 app.get('/process', (req, res) => {
-    // TODO: burda çalışan processleri bul, onları gönder
-
-    const processes = {}
-    res.render("process", processes)
+    res.render("process")
 })
 
 app.post('/process', (req, res) => {
     res.send({})
     createProcess(req.body)
+})
+
+app.get("/exitProcess/:username", (req, res) => {
+    exitProcess(req.params.username)
+    res.redirect("/")
 })
 
 app.get('*', (req, res) => {
