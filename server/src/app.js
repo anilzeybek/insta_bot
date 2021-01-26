@@ -3,6 +3,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const hbs = require('hbs')
 const {createProcess, getProcesses, exitProcess} = require("./processUtils")
+const databaseUtils = require("./databaseUtils")
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -37,8 +38,18 @@ app.get("/exitProcess/:username", (req, res) => {
     res.redirect("/")
 })
 
-app.get("/reports", (req, res) => {
-    // TODO: databaseUtils den likelar gibi şeyleri çek!!!
+app.get("/reports", async (req, res) => {
+    const likes = await databaseUtils.getLikes()
+    const requests = await databaseUtils.getRequests()
+    const blacklist = await databaseUtils.getBlacklist()
+
+    const data = {
+        likes,
+        requests,
+        blacklist
+    }
+
+    res.render("reports", data)
 })
 
 app.get('*', (req, res) => {

@@ -29,6 +29,10 @@ function createProcess(data) {
         const index = workingUsernames.indexOf(data.username)
         if (index !== -1)
             workingUsernames.splice(index, 1)
+
+        runningProcesses = runningProcesses.filter(function (obj) {
+            return obj.username !== data.username;
+        });
     })
 }
 
