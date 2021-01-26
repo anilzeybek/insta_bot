@@ -2,7 +2,7 @@ const path = require('path')
 const express = require('express')
 const bodyParser = require('body-parser')
 const hbs = require('hbs')
-
+const createProcess = require("./createProcess")
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -30,10 +30,8 @@ app.get('/process', (req, res) => {
 })
 
 app.post('/process', (req, res) => {
-    console.log(req.body)
-    res.send({
-        patates: "domates"
-    })
+    res.send({})
+    createProcess(req.body)
 })
 
 app.get('*', (req, res) => {

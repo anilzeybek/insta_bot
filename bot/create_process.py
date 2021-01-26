@@ -6,6 +6,8 @@ import random
 from database_utils import add_blacklist, in_blacklist
 from datetime import datetime
 from time import sleep
+import sys
+import json
 
 REMAINING_REQUESTS = 0
 REMAINING_LIKES = 0
@@ -57,7 +59,7 @@ def check_posts(user_page, post_page, keywords, username):
 def create_process(login_user, login_password, user_list, keywords, daily_request_limit, daily_like_limit):
     global REMAINING_REQUESTS, REMAINING_LIKES
 
-    browser = webdriver.Firefox(executable_path="./geckodriver")
+    browser = webdriver.Firefox(executable_path="../geckodriver")
     browser.implicitly_wait(5)
 
     login_page = LoginPage(browser, login_user, login_password)
@@ -87,16 +89,20 @@ def create_process(login_user, login_password, user_list, keywords, daily_reques
 
 
 def main():
-    login_user = "niyazitecik"
-    login_password = ".Qwerty1234"
+    filename = sys.argv[1]
+    with open(f"../{filename}") as json_file:
+        json_content = json.load(json_file)
 
-    user_list = ["matthewkheafy"]
-    keywords = ["the"]
+        login_user = json_content["username"]
+        login_password = json_content["password"]
 
-    daily_request_limit = 1
-    daily_like_limit = 1
+        user_list = json_content["targets"].split("\n")
+        keywords = json_content["keywords"].split("\n")
 
-    create_process(login_user, login_password, user_list, keywords, daily_request_limit, daily_like_limit)
+        daily_request_limit = json_content["requestLimit"]
+        daily_like_limit = json_content["likeLimit"]
+
+        create_process(login_user, login_password, user_list, keywords, daily_request_limit, daily_like_limit)
 
 
 if __name__ == "__main__":
