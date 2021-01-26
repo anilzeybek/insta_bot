@@ -2,7 +2,7 @@ const path = require('path')
 const express = require('express')
 const bodyParser = require('body-parser')
 const hbs = require('hbs')
-const {createProcess, getProcesses, exitProcess} = require("./processUtil")
+const {createProcess, getProcesses, exitProcess} = require("./processUtils")
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -35,6 +35,10 @@ app.post('/process', (req, res) => {
 app.get("/exitProcess/:username", (req, res) => {
     exitProcess(req.params.username)
     res.redirect("/")
+})
+
+app.get("/reports", (req, res) => {
+    // TODO: databaseUtils den likelar gibi şeyleri çek!!!
 })
 
 app.get('*', (req, res) => {
