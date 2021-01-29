@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.webdriver.firefox.options import Options
 from login_page import LoginPage
 from user_page import UserPage
 from post_page import PostPage
@@ -59,7 +60,9 @@ def check_posts(user_page, post_page, keywords, username):
 def create_process(login_user, login_password, user_list, keywords, daily_request_limit, daily_like_limit):
     global REMAINING_REQUESTS, REMAINING_LIKES
 
-    browser = webdriver.Firefox(executable_path="../geckodriver")
+    options = Options()
+    options.headless = True
+    browser = webdriver.Firefox(options=options, executable_path="../geckodriver")
     browser.implicitly_wait(5)
 
     login_page = LoginPage(browser, login_user, login_password)
