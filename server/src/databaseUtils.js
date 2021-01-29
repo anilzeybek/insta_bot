@@ -14,7 +14,7 @@ function getLikes() {
     })
 }
 
-function getRequests(callback) {
+function getRequests() {
     return new Promise((resolve, reject) => {
         db.all("SELECT * FROM follow_requests", (err, rows) => {
             if (err) reject(err)
@@ -23,7 +23,7 @@ function getRequests(callback) {
     })
 }
 
-function getBlacklist(callback) {
+function getBlacklist() {
     return new Promise((resolve, reject) => {
         db.all("SELECT * FROM blacklist", (err, rows) => {
             if (err) reject(err)

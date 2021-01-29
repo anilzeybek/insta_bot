@@ -102,6 +102,7 @@ def main():
         daily_request_limit = json_content["requestLimit"]
         daily_like_limit = json_content["likeLimit"]
 
+        print("PROCESS IS STARTING!!!")
         create_process(login_user, login_password, user_list, keywords, daily_request_limit, daily_like_limit)
 
 

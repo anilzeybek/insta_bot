@@ -4,6 +4,8 @@ const bodyParser = require('body-parser')
 const hbs = require('hbs')
 const {createProcess, getProcesses, exitProcess} = require("./processUtils")
 const databaseUtils = require("./databaseUtils")
+const basicAuth = require('express-basic-auth');
+
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -18,6 +20,11 @@ app.set('views', viewsPath)
 
 app.use(express.static(publicDirPath))
 app.use(bodyParser.json())
+app.use(basicAuth({
+    challenge: true,
+    users: {'admin': 'sifre1234'}
+}));
+
 
 app.get('/', (req, res) => {
     const runningProcesses = getProcesses()
