@@ -15,6 +15,9 @@
     <a href="/reports">Raporlar</a>
 </header>
 
+<br>
+<br>
+
 <div class="container">
     <div class="row">
         <div class="col-sm">
@@ -22,15 +25,15 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th scope="col">Beğenen hesap</th>
-                    <th scope="col">Beğenilen hesap</th>
+                    <th scope="col">Beğenen</th>
+                    <th scope="col">Beğenilen</th>
                     <th scope="col">Tarihi</th>
                 </tr>
                 </thead>
                 <tbody>
                 {{#each likes}}
                     <tr>
-                        <td>{{this.like_account}}</td>
+                        <td>{{this.liker_account}}</td>
                         <td>{{this.liked_account}}</td>
                         <td>{{this.like_date}}</td>
                     </tr>
