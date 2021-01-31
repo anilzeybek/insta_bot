@@ -21,6 +21,26 @@ def add_follow_request(requester_account, requested_account):
     print(f"{requester_account} send follow request to {requested_account}")
 
 
+def find_follow_requests(requester_account, days):
+    usernames = []
+
+    c.execute(
+        f"SELECT requested_account FROM follow_requests WHERE requester_account = ? AND request_date < datetime('now', '-{days} days')",
+        (requester_account,))
+    rows = c.fetchall()
+
+    for row in rows:
+        usernames.append(row[0])
+
+    return usernames
+
+
+def delete_follow_request(requester_account, requested_account):
+    x = (requester_account, requested_account)
+    c.execute("DELETE FROM follow_requests WHERE requester_account = ? AND requested_account = ?", x)
+    conn.commit()
+
+
 def add_blacklist(account):
     x = (account, 0)
     c.execute("INSERT INTO blacklist (account, request_declined) VALUES (?, ?)", x)

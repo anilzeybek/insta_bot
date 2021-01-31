@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <title>Taip isteklerini geri çek</title>
+</head>
+
+<body>
+<header>
+    <a href="/">Çalışan botlar</a>
+    <a href="/process">Yeni bot oluştur</a>
+    <a href="/reports">Raporlar</a>
+    <a href="/requests">Takip İstekleri</a>
+</header>
+
+
+<form>
+    <ul class="form-style-1">
+        <li>
+            <label>Giriş yapılacak hesap bilgileri</label>
+            <input type="text" class="field-divided" placeholder="Kullanıcı adı" id="username"/>
+            <input type="text" class="field-divided" placeholder="Şifre" id="password"/>
+        </li>
+        <li>
+            <label>Kaç gün önceki takipler silinsin?</label>
+            <input type="text" class="field-divided" placeholder="Gün sayısı" id="days"/>
+        </li>
+        <li>
+            <input type="submit" value="İstekleri geri al"/>
+        </li>
+    </ul>
+</form>
+
+<script src="js/requests.js"></script>
+</body>
+
+</html>

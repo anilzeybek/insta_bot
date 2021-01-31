@@ -59,6 +59,15 @@ app.get("/reports", async (req, res) => {
     res.render("reports", data)
 })
 
+app.get("/requests", (req, res) => {
+    res.render("requests")
+})
+
+app.post('/requests', (req, res) => {
+    res.send({})
+    createProcess(req.body)
+})
+
 app.get('*', (req, res) => {
     res.send('404')
 })

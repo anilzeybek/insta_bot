@@ -4,7 +4,7 @@ from login_page import LoginPage
 from user_page import UserPage
 from post_page import PostPage
 import random
-from database_utils import add_blacklist, in_blacklist
+from database_utils import add_blacklist, in_blacklist, find_follow_requests, delete_follow_request
 from datetime import datetime
 from time import sleep
 import sys
@@ -12,6 +12,9 @@ import json
 
 REMAINING_REQUESTS = 0
 REMAINING_LIKES = 0
+
+MIN_TIME = 0
+MAX_TIME = 0
 
 
 def like_or_follow_request(user_page, post_page, target_users):
@@ -38,6 +41,8 @@ def like_or_follow_request(user_page, post_page, target_users):
                 REMAINING_REQUESTS -= 1
 
                 print(f"remaining likes: {REMAINING_REQUESTS}")
+
+            sleep(random.randint(MIN_TIME, MAX_TIME))
 
 
 def check_posts(user_page, post_page, keywords, username):
@@ -91,7 +96,35 @@ def create_process(login_user, login_password, user_list, keywords, daily_reques
                 print(e)
 
 
+def undo_request(login_user, login_password, days):
+    options = Options()
+    options.headless = True
+    browser = webdriver.Firefox(options=options, executable_path="../geckodriver")
+    browser.implicitly_wait(5)
+
+    login_page = LoginPage(browser, login_user, login_password)
+    user_page = UserPage(browser, login_user)
+
+    login_page.login()
+    usernames = find_follow_requests(login_user, days)
+    print("undo people: ", usernames)
+
+    for username in usernames:
+        try:
+            print(f"unfollowing {username}")
+
+            user_page.go_user(username)
+            user_page.undo_follow_request()
+            delete_follow_request(login_user, username)
+
+            sleep(2)
+        except Exception as e:
+            print(e)
+
+
 def main():
+    global MIN_TIME, MAX_TIME
+
     filename = sys.argv[1]
     with open(f"../{filename}") as json_file:
         json_content = json.load(json_file)
@@ -99,14 +132,26 @@ def main():
         login_user = json_content["username"]
         login_password = json_content["password"]
 
-        user_list = json_content["targets"].split("\n")
-        keywords = json_content["keywords"].split("\n")
+        if json_content["UNDO_REQUEST"]:
+            print("undo requests")
 
-        daily_request_limit = json_content["requestLimit"]
-        daily_like_limit = json_content["likeLimit"]
+            days = json_content["days"]
+            undo_request(login_user, login_password, days)
 
-        print("PROCESS IS STARTING!!!")
-        create_process(login_user, login_password, user_list, keywords, daily_request_limit, daily_like_limit)
+        else:
+            print("creating bot")
+
+            user_list = json_content["targets"].split("\n")
+            keywords = json_content["keywords"].split("\n")
+
+            daily_request_limit = json_content["requestLimit"]
+            daily_like_limit = json_content["likeLimit"]
+
+            MIN_TIME = json_content["minTime"]
+            MAX_TIME = json_content["maxTime"]
+
+            print("PROCESS IS STARTING!!!")
+            create_process(login_user, login_password, user_list, keywords, daily_request_limit, daily_like_limit)
 
 
 if __name__ == "__main__":

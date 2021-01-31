@@ -18,8 +18,6 @@ class UserPage:
         return False
 
     def go_post(self, post_number):
-        # TODO: post may not exist, check!
-        
         line_index = post_number // 3 + 1
         post_index = (post_number - 1) % 3 + 1
 
@@ -38,3 +36,16 @@ class UserPage:
         add_follow_request(self.logged_user, acc_to_follow)
 
         sleep(3)
+
+    def undo_follow_request(self):
+        try:
+            requested_button = self.browser.find_element_by_xpath("//button[@type='button' and text()='Requested']")
+            requested_button.click()
+            sleep(4)
+
+            unfollow_button = self.browser.find_element_by_xpath("//button[text()='Unfollow']")
+            unfollow_button.click()
+        except Exception as e:
+            pass
+
+        sleep(4)
