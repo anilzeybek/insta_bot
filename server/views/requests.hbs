@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="css/styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-    <title>Taip isteklerini geri çek</title>
+    <title>Takip isteklerini geri çek</title>
 </head>
 
 <body>
@@ -27,6 +27,11 @@
         <li>
             <label>Kaç gün önceki takipler silinsin?</label>
             <input type="text" class="field-divided" placeholder="Gün sayısı" id="days"/>
+        </li>
+        <li>
+            <label>Bekleme aralığı (saniye)</label>
+            <input type="text" class="field-divided" placeholder="Minimum" id="minTime"/>
+            <input type="text" class="field-divided" placeholder="Maksimum" id="maxTime"/>
         </li>
         <li>
             <input type="submit" value="İstekleri geri al"/>

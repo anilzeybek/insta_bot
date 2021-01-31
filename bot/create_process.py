@@ -117,7 +117,7 @@ def undo_request(login_user, login_password, days):
             user_page.undo_follow_request()
             delete_follow_request(login_user, username)
 
-            sleep(2)
+            sleep(random.randint(MIN_TIME, MAX_TIME))
         except Exception as e:
             print(e)
 
@@ -131,6 +131,9 @@ def main():
 
         login_user = json_content["username"]
         login_password = json_content["password"]
+
+        MIN_TIME = json_content["minTime"]
+        MAX_TIME = json_content["maxTime"]
 
         if json_content["UNDO_REQUEST"]:
             print("undo requests")
@@ -147,10 +150,6 @@ def main():
             daily_request_limit = json_content["requestLimit"]
             daily_like_limit = json_content["likeLimit"]
 
-            MIN_TIME = json_content["minTime"]
-            MAX_TIME = json_content["maxTime"]
-
-            print("PROCESS IS STARTING!!!")
             create_process(login_user, login_password, user_list, keywords, daily_request_limit, daily_like_limit)
 
 

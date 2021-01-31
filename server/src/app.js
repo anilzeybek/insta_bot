@@ -52,8 +52,11 @@ app.get("/reports", async (req, res) => {
 
     const data = {
         likes,
+        likesLength: likes.length,
         requests,
-        blacklist
+        requestsLength: requests.length,
+        blacklist,
+        blacklistLength: blacklist.length
     }
 
     res.render("reports", data)
