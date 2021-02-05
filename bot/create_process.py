@@ -19,8 +19,7 @@ MIN_TIME = 0
 MAX_TIME = 0
 
 options = Options()
-# TODO: headless true yap
-# options.headless = True
+options.headless = True
 browser = webdriver.Firefox(options=options, executable_path="../geckodriver")
 browser.implicitly_wait(5)
 
