@@ -19,12 +19,7 @@ class LoginPage:
         login_button = self.browser.find_element_by_xpath("//button[@type='submit']")
         login_button.click()
 
-        sleep(3)
-
-        not_now_button = self.browser.find_element_by_xpath("//button[@type='button' and text()='Not Now']")
-        not_now_button.click()
-
-        sleep(3)
+        sleep(6)
 
         not_now_button = self.browser.find_elements_by_xpath("//button[text()='Not Now']")
         if not_now_button:

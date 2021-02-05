@@ -66,6 +66,28 @@
             </table>
         </div>
         <div class="col-sm">
+            Gönderilen Mesajlar
+            <div>Toplam: {{dmLength}}</div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Atan hesap</th>
+                    <th scope="col">Atılan hesap</th>
+                    <th scope="col">Tarihi</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{#each dm}}
+                    <tr>
+                        <td>{{this.sender_account}}</td>
+                        <td>{{this.sent_account}}</td>
+                        <td>{{this.dm_date}}</td>
+                    </tr>
+                {{/each}}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-sm">
             Kara liste
             <div>Toplam: {{blacklistLength}}</div>
             <table class="table">

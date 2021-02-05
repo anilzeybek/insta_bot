@@ -48,6 +48,7 @@ app.get("/exitProcess/:username", (req, res) => {
 app.get("/reports", async (req, res) => {
     const likes = await databaseUtils.getLikes()
     const requests = await databaseUtils.getRequests()
+    const dm = await databaseUtils.getDm()
     const blacklist = await databaseUtils.getBlacklist()
 
     const data = {
@@ -55,6 +56,8 @@ app.get("/reports", async (req, res) => {
         likesLength: likes.length,
         requests,
         requestsLength: requests.length,
+        dm,
+        dmLength: dm.length,
         blacklist,
         blacklistLength: blacklist.length
     }

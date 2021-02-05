@@ -7,7 +7,6 @@ c.execute("""
     CREATE TABLE likes (
         liker_account TEXT,
         liked_account TEXT,
-        liked_post TEXT,
         like_date DATE DEFAULT (datetime('now','localtime'))
     )
 """)
@@ -23,20 +22,21 @@ c.execute("""
 """)
 
 c.execute("""
+    CREATE TABLE dm (
+        sender_account TEXT,
+        sent_account TEXT,
+        message TEXT,
+        dm_date DATE DEFAULT (datetime('now','localtime'))
+    )
+""")
+
+c.execute("""
     CREATE TABLE blacklist (
         account TEXT,
         request_declined INTEGER,
         blacklist_date DATE DEFAULT (datetime('now','localtime'))
     )
 """)
-
-c.execute("""
-    CREATE TABLE blockers (
-        blocker_account TEXT,
-        blocked_account TEXT
-    )
-""")
-
 
 conn.commit()
 conn.close()

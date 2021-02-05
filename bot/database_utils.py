@@ -21,6 +21,14 @@ def add_follow_request(requester_account, requested_account):
     print(f"{requester_account} send follow request to {requested_account}")
 
 
+def add_dm(sender_account, sent_account, message):
+    x = (sender_account, sent_account, message)
+    c.execute("INSERT INTO dm (sender_account, sent_account, message) VALUES (?, ?, ?)", x)
+    conn.commit()
+
+    print(f"{sender_account} send dm to {sent_account}")
+
+
 def find_follow_requests(requester_account, days):
     usernames = []
 
@@ -48,14 +56,6 @@ def add_blacklist(account):
 
     print(f"{account} has been added to blacklist")
     print("--------------\n")
-
-
-def add_blocker(blocker_account, blocked_account):
-    x = (blocker_account, blocked_account)
-    c.execute("INSERT INTO blockers VALUES (?, ?)", x)
-    conn.commit()
-
-    print(f"{blocker_account} blocked {blocked_account}")
 
 
 def in_blacklist(account):
