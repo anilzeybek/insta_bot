@@ -36,7 +36,7 @@
                 {{#each likes}}
                     <tr>
                         <td>{{this.liker_account}}</td>
-                        <td>{{this.liked_account}}</td>
+                        <td><a href="https://www.instagram.com/{{this.liked_account}}" target="_blank">{{this.liked_account}}</a></td>
                         <td>{{this.like_date}}</td>
                     </tr>
                 {{/each}}
@@ -58,7 +58,7 @@
                 {{#each requests}}
                     <tr>
                         <td>{{this.requester_account}}</td>
-                        <td>{{this.requested_account}}</td>
+                        <td><a href="https://www.instagram.com/{{this.requested_account}}" target="_blank">{{this.requested_account}}</a></td>
                         <td>{{this.request_date}}</td>
                     </tr>
                 {{/each}}
@@ -80,7 +80,7 @@
                 {{#each dm}}
                     <tr>
                         <td>{{this.sender_account}}</td>
-                        <td>{{this.sent_account}}</td>
+                        <td><a href="https://www.instagram.com/{{this.sent_account}}" target="_blank">{{this.sent_account}}</a></td>
                         <td>{{this.dm_date}}</td>
                     </tr>
                 {{/each}}
@@ -100,7 +100,7 @@
                 <tbody>
                 {{#each blacklist}}
                     <tr>
-                        <td>{{this.account}}</td>
+                        <td><a href="https://www.instagram.com/{{this.account}}" target="_blank">{{this.account}}</a></td>
                         <td>{{this.blacklist_date}}</td>
                     </tr>
                 {{/each}}

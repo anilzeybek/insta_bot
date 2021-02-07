@@ -26,10 +26,16 @@ class PostPage:
         for comment in comments:
             text = comment.find_element_by_xpath(".//span[@class='']").text
 
-            if set(text.split()).intersection(set(kw_list)):
-                username = comment.find_element_by_xpath(".//span/a").text
-                usernames.append(username)
+            comment_words = text.split()
+            for keyword in kw_list:
+                for comment_word in comment_words:
+                    if keyword in comment_word:
+                        username = comment.find_element_by_xpath(".//span/a").text
+                        usernames.append(username)
 
+                        break
+
+        usernames = list(dict.fromkeys(usernames))
         return usernames
 
     def like_post(self, post_owner):

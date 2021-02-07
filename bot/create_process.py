@@ -23,6 +23,7 @@ options.headless = True
 browser = webdriver.Firefox(options=options, executable_path="../geckodriver")
 browser.implicitly_wait(5)
 
+messages_init = []
 messages = []
 
 
@@ -51,7 +52,6 @@ def like_or_follow_request_or_dm(user_page, post_page, dm_page, target_users):
 
                 print(f"remaining requests: {REMAINING_REQUESTS}")
             elif locked_acc and REMAINING_DM > 0:
-                # TODO: messages bitince nolcak?
                 dm_page.send_message(user, messages.pop(0))
 
                 add_blacklist(user)
@@ -83,7 +83,7 @@ def check_user(user_page, post_page, dm_page, keywords, username):
 
 def create_process(login_user, login_password, user_list, keywords, daily_request_limit, daily_like_limit,
                    daily_dm_limit):
-    global REMAINING_REQUESTS, REMAINING_LIKES, REMAINING_DM
+    global REMAINING_REQUESTS, REMAINING_LIKES, REMAINING_DM, messages, messages_init
 
     login_page = LoginPage(browser, login_user, login_password)
     user_page = UserPage(browser, login_user)
@@ -100,6 +100,7 @@ def create_process(login_user, login_password, user_list, keywords, daily_reques
             print("Resetting remaining requests, likes and dm")
             reset_time = datetime.now()
             REMAINING_REQUESTS, REMAINING_LIKES, REMAINING_DM = daily_request_limit, daily_like_limit, daily_dm_limit
+            messages = messages_init
 
         for username in user_list:
             try:
@@ -136,7 +137,7 @@ def undo_request(login_user, login_password, days):
 
 
 def main():
-    global MIN_TIME, MAX_TIME, messages
+    global MIN_TIME, MAX_TIME, messages, messages_init
 
     filename = sys.argv[1]
     with open(f"../{filename}") as json_file:
@@ -159,7 +160,8 @@ def main():
 
             user_list = json_content["targets"].split("\n")
             keywords = json_content["keywords"].split("\n")
-            messages = json_content["messages"].split("\n")
+            messages = json_content["messages"]
+            messages_init = json_content["messages"]
 
             daily_request_limit = json_content["requestLimit"]
             daily_like_limit = json_content["likeLimit"]

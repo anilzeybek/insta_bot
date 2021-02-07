@@ -8,23 +8,38 @@ const likeLimit = document.querySelector('#likeLimit')
 const dmLimit = document.querySelector("#dmLimit")
 const targets = document.querySelector('#targets')
 const keywords = document.querySelector('#keywords')
-const messages = document.querySelector('#messages')
 const minTime = document.querySelector('#minTime')
 const maxTime = document.querySelector('#maxTime')
+const messageArea = document.querySelector(".message-area")
 
+dmLimit.addEventListener('keyup', async e => {
+    e.preventDefault()
+
+    let messages = document.querySelectorAll(".messages")
+    if (messages.length < parseInt(dmLimit.value)) {
+        for (let i = 0; i < parseInt(dmLimit.value) - messages.length; i++) {
+            const textArea = document.createElement("textarea")
+            textArea.classList.add("field-long")
+            textArea.classList.add("field-textarea")
+            textArea.classList.add("messages")
+
+            messageArea.appendChild(textArea)
+        }
+    }
+
+})
 
 processForm.addEventListener('submit', async e => {
     e.preventDefault()
+    let messages = document.querySelectorAll(".messages")
 
-    if (!username.value || !password.value || !requestLimit.value || !likeLimit.value || !dmLimit.value || !targets.value || !keywords.value || !messages.value || !minTime.value || !maxTime.value) {
+    if (!username.value || !password.value || !requestLimit.value || !likeLimit.value || !dmLimit.value || !targets.value || !keywords.value || !minTime.value || !maxTime.value) {
         alert("Bütün alanları doldurun")
         return
     }
 
-    if (parseInt(dmLimit.value) !== messages.value.split('\n').length) {
-        alert("Limit sayısı ile mesaj sayısı aynı olmalı")
-        return
-    }
+    const messageValues = []
+    messages.forEach(message => messageValues.push(message.value))
 
     const data = {
         username: username.value,
@@ -36,7 +51,7 @@ processForm.addEventListener('submit', async e => {
         maxTime: parseInt(maxTime.value),
         targets: targets.value,
         keywords: keywords.value,
-        messages: messages.value
+        messages: messageValues
     }
 
     await fetch(`/process`, {
