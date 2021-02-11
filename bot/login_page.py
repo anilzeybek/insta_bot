@@ -31,4 +31,5 @@ class LoginPage:
         if not_now_button:
             not_now_button[0].click()
 
+        print("Successfully logged in")
         sleep(3)

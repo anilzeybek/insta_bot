@@ -104,6 +104,7 @@ def create_process(login_user, login_password, user_list, keywords, daily_reques
 
         for username in user_list:
             try:
+                print(f"going to target user {username}")
                 over = check_user(user_page, post_page, dm_page, keywords, username)
                 if over:
                     break
