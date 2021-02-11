@@ -1,4 +1,5 @@
 from time import sleep
+import sys
 
 
 class LoginPage:
@@ -20,6 +21,11 @@ class LoginPage:
         login_button.click()
 
         sleep(6)
+
+        unusual_login_error = self.browser.find_elements_by_xpath("//h2[text()='We Detected An Unusual Login Attempt']")
+        if unusual_login_error:
+            print("Unusual Login ERROR")
+            sys.exit(1)
 
         not_now_button = self.browser.find_elements_by_xpath("//button[text()='Not Now']")
         if not_now_button:
