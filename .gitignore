@@ -1,6 +1,8 @@
 **/__pycache__
 **/node_modules
+**/geckodriver
 **/geckodriver.log
 **/.vscode
 **/.idea
 **/options.json
+**/.DS_Store

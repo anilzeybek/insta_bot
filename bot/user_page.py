@@ -29,6 +29,21 @@ class UserPage:
 
         sleep(4)
 
+    def get_followers(self):
+        followers_button = self.browser.find_element_by_xpath("//a[contains(@href, 'followers')]")
+        followers_button.click()
+        sleep(5)
+
+        follower_usernames = []
+        followers = self.browser.find_elements_by_xpath("/html/body/div[4]/div/div/div[2]/ul/div/li")
+
+        for follower in followers:
+            follower_username = follower.find_element_by_xpath('.//span/a').text
+            follower_usernames.append(follower_username)
+
+        return set(follower_usernames)
+
+
     def send_follow_request(self, acc_to_follow):
         follow_button = self.browser.find_element_by_xpath("//button[@type='button' and text()='Follow']")
         follow_button.click()

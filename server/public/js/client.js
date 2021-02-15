@@ -7,6 +7,7 @@ const requestLimit = document.querySelector('#requestLimit')
 const likeLimit = document.querySelector('#likeLimit')
 const dmLimit = document.querySelector("#dmLimit")
 const targets = document.querySelector('#targets')
+const lookFollowers = document.querySelector('#lookFollowers')
 const keywords = document.querySelector('#keywords')
 const minTime = document.querySelector('#minTime')
 const maxTime = document.querySelector('#maxTime')
@@ -26,14 +27,20 @@ dmLimit.addEventListener('keyup', async e => {
             messageArea.appendChild(textArea)
         }
     }
+})
 
+lookFollowers.addEventListener('change', async e => {
+    if (lookFollowers.checked)
+        keywords.style.visibility = "hidden";
+    else
+        keywords.style.visibility = "visible";
 })
 
 processForm.addEventListener('submit', async e => {
     e.preventDefault()
     let messages = document.querySelectorAll(".messages")
 
-    if (!username.value || !password.value || !requestLimit.value || !likeLimit.value || !dmLimit.value || !targets.value || !keywords.value || !minTime.value || !maxTime.value) {
+    if (!username.value || !password.value || !requestLimit.value || !likeLimit.value || !dmLimit.value || !targets.value || (!keywords.value && !lookFollowers.checked)|| !minTime.value || !maxTime.value) {
         alert("Bütün alanları doldurun")
         return
     }
@@ -51,6 +58,7 @@ processForm.addEventListener('submit', async e => {
         maxTime: parseInt(maxTime.value),
         targets: targets.value,
         keywords: keywords.value,
+        lookFollowers: lookFollowers.checked,
         messages: messageValues
     }
 

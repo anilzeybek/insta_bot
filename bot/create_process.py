@@ -58,31 +58,43 @@ def like_or_follow_request_or_dm(user_page, post_page, dm_page, target_users):
                 REMAINING_DM -= 1
 
                 print(f"remaining dm: {REMAINING_DM}")
+            elif REMAINING_LIKES <= 0 and REMAINING_REQUESTS <= 0 and REMAINING_DM <= 0:
+                return
 
             sleep(random.randint(MIN_TIME, MAX_TIME))
 
 
-def check_user(user_page, post_page, dm_page, keywords, username):
+def check_user(user_page, post_page, dm_page, look_followers, keywords, username):
     global REMAINING_REQUESTS, REMAINING_LIKES, REMAINING_DM
 
     locked_acc = user_page.go_user(username)
     if not locked_acc:
-        for post_no in range(1, 6):
+        if look_followers:
             if REMAINING_REQUESTS > 0 or REMAINING_LIKES > 0 or REMAINING_DM > 0:
-                user_page.go_post(post_no)
-                target_users = post_page.find_target_users(keywords)
+                print(f"looking followers of the {username}")
 
+                target_users = user_page.get_followers()
                 like_or_follow_request_or_dm(user_page, post_page, dm_page, target_users)
-                user_page.go_user(username)
-
             else:
                 return True
+
+        else:
+            for post_no in range(1, 6):
+                if REMAINING_REQUESTS > 0 or REMAINING_LIKES > 0 or REMAINING_DM > 0:
+                    user_page.go_post(post_no)
+                    target_users = post_page.find_target_users(keywords)
+
+                    like_or_follow_request_or_dm(user_page, post_page, dm_page, target_users)
+                    user_page.go_user(username)
+
+                else:
+                    return True
 
     return False
 
 
-def create_process(login_user, login_password, user_list, keywords, daily_request_limit, daily_like_limit,
-                   daily_dm_limit):
+def create_process(login_user, login_password, user_list, look_followers,
+                keywords, daily_request_limit, daily_like_limit, daily_dm_limit):
     global REMAINING_REQUESTS, REMAINING_LIKES, REMAINING_DM, messages, messages_init
 
     login_page = LoginPage(browser, login_user, login_password)
@@ -105,7 +117,7 @@ def create_process(login_user, login_password, user_list, keywords, daily_reques
         for username in user_list:
             try:
                 print(f"going to target user {username}")
-                over = check_user(user_page, post_page, dm_page, keywords, username)
+                over = check_user(user_page, post_page, dm_page, look_followers, keywords, username)
                 if over:
                     break
             except Exception as e:
@@ -160,6 +172,7 @@ def main():
             print("creating bot")
 
             user_list = json_content["targets"].split("\n")
+            look_followers = json_content["lookFollowers"]
             keywords = json_content["keywords"].split("\n")
             messages = json_content["messages"]
             messages_init = json_content["messages"]
@@ -168,7 +181,7 @@ def main():
             daily_like_limit = json_content["likeLimit"]
             daily_dm_limit = json_content["dmLimit"]
 
-            create_process(login_user, login_password, user_list, keywords,
+            create_process(login_user, login_password, user_list, look_followers, keywords,
                            daily_request_limit, daily_like_limit, daily_dm_limit)
 
 
