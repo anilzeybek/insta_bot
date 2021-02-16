@@ -29,13 +29,13 @@ class UserPage:
 
         sleep(4)
 
-    def get_followers(self):
+    def get_followers(self, how_many_followers):
         followers_button = self.browser.find_element_by_xpath("//a[contains(@href, 'followers')]")
         followers_button.click()
         sleep(5)
 
         follower_usernames = []
-        followers = self.browser.find_elements_by_xpath("/html/body/div[4]/div/div/div[2]/ul/div/li")
+        followers = self.browser.find_elements_by_xpath("/html/body/div[4]/div/div/div[2]/ul/div/li")[:how_many_followers]
 
         for follower in followers:
             follower_username = follower.find_element_by_xpath('.//span/a').text

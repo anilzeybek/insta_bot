@@ -8,6 +8,7 @@ const likeLimit = document.querySelector('#likeLimit')
 const dmLimit = document.querySelector("#dmLimit")
 const targets = document.querySelector('#targets')
 const lookFollowers = document.querySelector('#lookFollowers')
+const howManyFollowers = document.querySelector("#howManyFollowers")
 const keywords = document.querySelector('#keywords')
 const minTime = document.querySelector('#minTime')
 const maxTime = document.querySelector('#maxTime')
@@ -30,10 +31,14 @@ dmLimit.addEventListener('keyup', async e => {
 })
 
 lookFollowers.addEventListener('change', async e => {
-    if (lookFollowers.checked)
+    if (lookFollowers.checked) {
         keywords.style.visibility = "hidden";
-    else
+        howManyFollowers.style.visibility = "visible"
+    }
+    else {
         keywords.style.visibility = "visible";
+        howManyFollowers.style.visibility = "hidden"
+    }
 })
 
 processForm.addEventListener('submit', async e => {
@@ -59,6 +64,7 @@ processForm.addEventListener('submit', async e => {
         targets: targets.value,
         keywords: keywords.value,
         lookFollowers: lookFollowers.checked,
+        howManyFollowers: parseInt(howManyFollowers.value) || 10,
         messages: messageValues
     }
 

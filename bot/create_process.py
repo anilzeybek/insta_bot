@@ -23,6 +23,7 @@ options.headless = True
 browser = webdriver.Firefox(options=options, executable_path="../geckodriver")
 browser.implicitly_wait(5)
 
+user_list = []
 messages_init = []
 messages = []
 
@@ -31,7 +32,7 @@ def like_or_follow_request_or_dm(user_page, post_page, dm_page, target_users):
     global REMAINING_REQUESTS, REMAINING_LIKES, REMAINING_DM
 
     for user in target_users:
-        if not in_blacklist(user):
+        if not in_blacklist(user) and user not in user_list:
             locked_acc = user_page.go_user(user)
 
             if not locked_acc and REMAINING_LIKES > 0:
@@ -64,7 +65,7 @@ def like_or_follow_request_or_dm(user_page, post_page, dm_page, target_users):
             sleep(random.randint(MIN_TIME, MAX_TIME))
 
 
-def check_user(user_page, post_page, dm_page, look_followers, keywords, username):
+def check_user(user_page, post_page, dm_page, look_followers, how_many_followers, keywords, username):
     global REMAINING_REQUESTS, REMAINING_LIKES, REMAINING_DM
 
     locked_acc = user_page.go_user(username)
@@ -73,7 +74,7 @@ def check_user(user_page, post_page, dm_page, look_followers, keywords, username
             if REMAINING_REQUESTS > 0 or REMAINING_LIKES > 0 or REMAINING_DM > 0:
                 print(f"looking followers of the {username}")
 
-                target_users = user_page.get_followers()
+                target_users = user_page.get_followers(how_many_followers)
                 like_or_follow_request_or_dm(user_page, post_page, dm_page, target_users)
             else:
                 return True
@@ -93,9 +94,9 @@ def check_user(user_page, post_page, dm_page, look_followers, keywords, username
     return False
 
 
-def create_process(login_user, login_password, user_list, look_followers,
-                keywords, daily_request_limit, daily_like_limit, daily_dm_limit):
-    global REMAINING_REQUESTS, REMAINING_LIKES, REMAINING_DM, messages, messages_init
+def create_process(login_user, login_password, look_followers, how_many_followers,
+                   keywords, daily_request_limit, daily_like_limit, daily_dm_limit):
+    global REMAINING_REQUESTS, REMAINING_LIKES, REMAINING_DM, messages, messages_init, user_list
 
     login_page = LoginPage(browser, login_user, login_password)
     user_page = UserPage(browser, login_user)
@@ -117,7 +118,8 @@ def create_process(login_user, login_password, user_list, look_followers,
         for username in user_list:
             try:
                 print(f"going to target user {username}")
-                over = check_user(user_page, post_page, dm_page, look_followers, keywords, username)
+                over = check_user(user_page, post_page, dm_page, look_followers,
+                                how_many_followers, keywords, username)
                 if over:
                     break
             except Exception as e:
@@ -150,7 +152,7 @@ def undo_request(login_user, login_password, days):
 
 
 def main():
-    global MIN_TIME, MAX_TIME, messages, messages_init
+    global MIN_TIME, MAX_TIME, messages, messages_init, user_list
 
     filename = sys.argv[1]
     with open(f"../{filename}") as json_file:
@@ -173,6 +175,7 @@ def main():
 
             user_list = json_content["targets"].split("\n")
             look_followers = json_content["lookFollowers"]
+            how_many_followers = json_content["howManyFollowers"]
             keywords = json_content["keywords"].split("\n")
             messages = json_content["messages"]
             messages_init = json_content["messages"]
@@ -181,8 +184,8 @@ def main():
             daily_like_limit = json_content["likeLimit"]
             daily_dm_limit = json_content["dmLimit"]
 
-            create_process(login_user, login_password, user_list, look_followers, keywords,
-                           daily_request_limit, daily_like_limit, daily_dm_limit)
+            create_process(login_user, login_password, look_followers, how_many_followers,
+                        keywords, daily_request_limit, daily_like_limit, daily_dm_limit)
 
 
 if __name__ == "__main__":
