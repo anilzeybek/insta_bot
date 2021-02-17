@@ -29,7 +29,7 @@ class PostPage:
             comment_words = text.split()
             for keyword in kw_list:
                 for comment_word in comment_words:
-                    if keyword in comment_word:
+                    if keyword.lower().strip() in comment_word.lower().strip():
                         username = comment.find_element_by_xpath(".//span/a").text
                         usernames.append(username)
 
