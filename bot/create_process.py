@@ -22,7 +22,7 @@ MAX_TIME = 0
 
 logging.basicConfig(filename='../logfile.log', level=logging.WARNING, format='%(asctime)s %(message)s', datefmt='%d/%m/%Y %H:%M:%S')
 options = Options()
-# options.headless = True
+options.headless = True
 browser = webdriver.Firefox(options=options, executable_path="../geckodriver", service_log_path='/dev/null')
 browser.implicitly_wait(5)
 
