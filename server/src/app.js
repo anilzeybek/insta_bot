@@ -4,7 +4,8 @@ const bodyParser = require('body-parser')
 const hbs = require('hbs')
 const {createProcess, getProcesses, exitProcess} = require("./processUtils")
 const databaseUtils = require("./databaseUtils")
-const basicAuth = require('express-basic-auth');
+const basicAuth = require('express-basic-auth')
+const fs = require('fs')
 
 
 const app = express()
@@ -72,6 +73,13 @@ app.get("/requests", (req, res) => {
 app.post('/requests', (req, res) => {
     res.send({})
     createProcess(req.body)
+})
+
+app.get('/download', async (req, res) => {
+    const blacklist = await databaseUtils.getBlacklist()
+    fs.writeFileSync("./blacklist.json", JSON.stringify(blacklist))
+
+    res.download('./blacklist.json')
 })
 
 app.get('*', (req, res) => {
