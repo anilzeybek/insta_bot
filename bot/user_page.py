@@ -25,7 +25,8 @@ class UserPage:
             post = self.browser.find_element_by_xpath(f"//article/div[1]/div/div[{line_index}]/div[{post_index}]")
             post.click()
         except Exception as e:
-            pass
+            sleep(10)
+
 
         sleep(4)
 
@@ -61,6 +62,6 @@ class UserPage:
             unfollow_button = self.browser.find_element_by_xpath("//button[text()='Unfollow']")
             unfollow_button.click()
         except Exception as e:
-            pass
+            sleep(10)
 
         sleep(4)

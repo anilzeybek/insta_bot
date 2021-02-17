@@ -10,6 +10,8 @@ from datetime import datetime
 from time import sleep
 import sys
 import json
+import logging
+
 
 REMAINING_REQUESTS = 0
 REMAINING_LIKES = 0
@@ -18,9 +20,10 @@ REMAINING_DM = 0
 MIN_TIME = 0
 MAX_TIME = 0
 
+logging.basicConfig(filename='../logfile.log', level=logging.WARNING, format='%(asctime)s %(message)s', datefmt='%d/%m/%Y %H:%M:%S')
 options = Options()
-options.headless = True
-browser = webdriver.Firefox(options=options, executable_path="../geckodriver")
+# options.headless = True
+browser = webdriver.Firefox(options=options, executable_path="../geckodriver", service_log_path='/dev/null')
 browser.implicitly_wait(5)
 
 user_list = []
@@ -44,21 +47,24 @@ def like_or_follow_request_or_dm(user_page, post_page, dm_page, target_users):
                 add_blacklist(user)
                 REMAINING_LIKES -= 1
 
-                print(f"remaining likes: {REMAINING_LIKES}")
+                logging.warning(f"liked post of {user}")
+                logging.warning(f"remaining likes: {REMAINING_LIKES}")
             elif locked_acc and REMAINING_REQUESTS > 0:
                 user_page.send_follow_request(user)
 
                 add_blacklist(user)
                 REMAINING_REQUESTS -= 1
 
-                print(f"remaining requests: {REMAINING_REQUESTS}")
+                logging.warning(f"follow request sent to {user}")
+                logging.warning(f"remaining requests: {REMAINING_REQUESTS}")
             elif locked_acc and REMAINING_DM > 0:
                 dm_page.send_message(user, messages.pop(0))
 
                 add_blacklist(user)
                 REMAINING_DM -= 1
 
-                print(f"remaining dm: {REMAINING_DM}")
+                logging.warning(f"dm sent to {user}")
+                logging.warning(f"remaining dm: {REMAINING_DM}")
             elif REMAINING_LIKES <= 0 and REMAINING_REQUESTS <= 0 and REMAINING_DM <= 0:
                 return
 
@@ -72,7 +78,7 @@ def check_user(user_page, post_page, dm_page, look_followers, how_many_followers
     if not locked_acc:
         if look_followers:
             if REMAINING_REQUESTS > 0 or REMAINING_LIKES > 0 or REMAINING_DM > 0:
-                print(f"looking followers of the {username}")
+                logging.warning(f"looking followers of the {username}")
 
                 target_users = user_page.get_followers(how_many_followers)
                 like_or_follow_request_or_dm(user_page, post_page, dm_page, target_users)
@@ -82,6 +88,7 @@ def check_user(user_page, post_page, dm_page, look_followers, how_many_followers
         else:
             for post_no in range(1, 6):
                 if REMAINING_REQUESTS > 0 or REMAINING_LIKES > 0 or REMAINING_DM > 0:
+                    logging.warning(f"looking at post of target user {username}")
                     user_page.go_post(post_no)
                     target_users = post_page.find_target_users(keywords)
 
@@ -110,23 +117,24 @@ def create_process(login_user, login_password, look_followers, how_many_follower
 
     while True:
         if (datetime.now() - reset_time).total_seconds() > 70000:
-            print("Resetting remaining requests, likes and dm")
+            logging.warning("Resetting remaining requests, likes and dm")
             reset_time = datetime.now()
             REMAINING_REQUESTS, REMAINING_LIKES, REMAINING_DM = daily_request_limit, daily_like_limit, daily_dm_limit
             messages = messages_init
 
         for username in user_list:
             try:
-                print(f"going to target user {username}")
+                logging.warning(f"going to target user {username}")
                 over = check_user(user_page, post_page, dm_page, look_followers,
-                                how_many_followers, keywords, username)
+                                  how_many_followers, keywords, username)
                 if over:
                     break
             except Exception as e:
-                print(e)
+                logging.warning(e)
+                sleep(10)
 
         if REMAINING_REQUESTS == 0 and REMAINING_LIKES == 0 and REMAINING_DM == 0:
-            print("Going into sleep mode since no remaining requests, likes and dm")
+            logging.warning("Going into sleep mode since no remaining requests, likes and dm")
             sleep(80000)
 
 
@@ -136,11 +144,11 @@ def undo_request(login_user, login_password, days):
 
     login_page.login()
     usernames = find_follow_requests(login_user, days)
-    print("undo people: ", usernames)
+    logging.warning("undo people: ", usernames)
 
     for username in usernames:
         try:
-            print(f"unfollowing {username}")
+            logging.warning(f"unfollowing {username}")
 
             user_page.go_user(username)
             user_page.undo_follow_request()
@@ -148,7 +156,8 @@ def undo_request(login_user, login_password, days):
 
             sleep(random.randint(MIN_TIME, MAX_TIME))
         except Exception as e:
-            print(e)
+            logging.warning(e)
+            sleep(10)
 
 
 def main():
@@ -165,13 +174,13 @@ def main():
         MAX_TIME = json_content["maxTime"]
 
         if "UNDO_REQUEST" in json_content:
-            print("undo requests")
+            logging.warning("undo requests")
 
             days = json_content["days"]
             undo_request(login_user, login_password, days)
 
         else:
-            print("creating bot")
+            logging.warning("creating bot")
 
             user_list = json_content["targets"].split("\n")
             look_followers = json_content["lookFollowers"]
@@ -185,7 +194,7 @@ def main():
             daily_dm_limit = json_content["dmLimit"]
 
             create_process(login_user, login_password, look_followers, how_many_followers,
-                        keywords, daily_request_limit, daily_like_limit, daily_dm_limit)
+                           keywords, daily_request_limit, daily_like_limit, daily_dm_limit)
 
 
 if __name__ == "__main__":

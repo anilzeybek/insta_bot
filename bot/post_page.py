@@ -45,6 +45,6 @@ class PostPage:
 
             add_like(self.logged_user, post_owner)
         except Exception as e:
-            pass
+            sleep(10)
 
         sleep(3)
