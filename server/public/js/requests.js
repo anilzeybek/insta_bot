@@ -9,7 +9,7 @@ const maxTime = document.querySelector('#maxTime')
 form.addEventListener('submit', async e => {
     e.preventDefault()
 
-    if (!username.value || !password.value || !days.value || !minTime.value || maxTime.value) {
+    if (!username.value || !password.value || !days.value || !minTime.value || !maxTime.value) {
         alert("Bütün alanları doldurun")
         return
     }
