@@ -48,3 +48,10 @@ class PostPage:
             sleep(10)
 
         sleep(3)
+
+    def go_post(self, link):
+        self.browser.get(link)
+        sleep(6)
+
+    def get_username(self):
+        return self.browser.find_element_by_xpath("//article//span/a").text

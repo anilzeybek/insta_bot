@@ -2,7 +2,7 @@ const path = require('path')
 const express = require('express')
 const bodyParser = require('body-parser')
 const hbs = require('hbs')
-const {createProcess, getProcesses, exitProcess} = require("./processUtils")
+const { createProcess, getProcesses, exitProcess } = require("./processUtils")
 const databaseUtils = require("./databaseUtils")
 const basicAuth = require('express-basic-auth')
 const fs = require('fs')
@@ -25,7 +25,7 @@ app.use(bodyParser.json())
 const password = fs.readFileSync("./password.txt")
 app.use(basicAuth({
     challenge: true,
-    users: {'admin': password.toString()}
+    users: { 'admin': password.toString() }
 }));
 
 
@@ -91,6 +91,11 @@ app.get("/settings", (req, res) => {
 app.post("/settings", (req, res) => {
     res.send({})
     fs.writeFileSync("./password.txt", req.body.newPassword)
+})
+
+app.get("/clean", async (req, res) => {
+    const users = await databaseUtils.getUsers()
+    res.render("clean", {users})
 })
 
 app.get('*', (req, res) => {

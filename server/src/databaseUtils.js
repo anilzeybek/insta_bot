@@ -41,7 +41,17 @@ function getBlacklist() {
     })
 }
 
+function getUsers() {
+    return new Promise((resolve, reject) => {
+        db.all("SELECT * FROM users", (err, rows) => {
+            if (err) reject(err)
+            else resolve(rows)
+        })
+    })
+}
+
 exports.getLikes = getLikes
 exports.getRequests = getRequests
 exports.getDm = getDm
 exports.getBlacklist = getBlacklist
+exports.getUsers = getUsers

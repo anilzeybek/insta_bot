@@ -3,9 +3,10 @@ from selenium.webdriver.firefox.options import Options
 from login_page import LoginPage
 from user_page import UserPage
 from post_page import PostPage
+from hashtag_page import HashtagPage
 from dm_page import DmPage
 import random
-from database_utils import add_blacklist, in_blacklist, find_follow_requests, delete_follow_request
+from database_utils import add_blacklist, in_blacklist, find_follow_requests, delete_follow_request, add_user
 from datetime import datetime
 from time import sleep
 import sys
@@ -22,7 +23,7 @@ MAX_TIME = 0
 
 logging.basicConfig(filename='../logfile.log', level=logging.WARNING, format='%(asctime)s %(message)s', datefmt='%d/%m/%Y %H:%M:%S')
 options = Options()
-options.headless = True
+# options.headless = True
 browser = webdriver.Firefox(options=options, executable_path="../geckodriver", service_log_path='/dev/null')
 browser.implicitly_wait(5)
 
@@ -161,6 +162,28 @@ def undo_request(login_user, login_password, days):
             sleep(10)
 
 
+def find_hashtags(login_user, login_password, hashtags):
+    login_page = LoginPage(browser, login_user, login_password)
+    hashtag_page = HashtagPage(browser)
+    post_page = PostPage(browser, login_user)
+
+    login_page.login()
+    usernames = set()
+
+    for hashtag in hashtags:
+        hashtag_page.go_hashtag(hashtag)
+        post_links = hashtag_page.get_post_links()
+
+        for post_link in post_links:
+            post_page.go_post(post_link)
+
+            username = post_page.get_username()
+            usernames.add(username)
+
+    for username in usernames:
+        add_user(username)
+
+
 def main():
     global MIN_TIME, MAX_TIME, messages, messages_init, user_list
 
@@ -171,17 +194,24 @@ def main():
         login_user = json_content["username"]
         login_password = json_content["password"]
 
-        MIN_TIME = json_content["minTime"]
-        MAX_TIME = json_content["maxTime"]
+        if "FIND_HASHTAG" in json_content:
+            logging.warning("finding hashtags")
 
-        if "UNDO_REQUEST" in json_content:
+            hashtags = json_content["hashtags"].split("\n")
+            find_hashtags(login_user, login_password, hashtags)
+        elif "UNDO_REQUEST" in json_content:
             logging.warning("undo requests")
+
+            MIN_TIME = json_content["minTime"]
+            MAX_TIME = json_content["maxTime"]
 
             days = json_content["days"]
             undo_request(login_user, login_password, days)
-
         else:
             logging.warning("creating bot")
+
+            MIN_TIME = json_content["minTime"]
+            MAX_TIME = json_content["maxTime"]
 
             user_list = json_content["targets"].split("\n")
             look_followers = json_content["lookFollowers"]

@@ -27,7 +27,6 @@ class UserPage:
         except Exception as e:
             sleep(10)
 
-
         sleep(4)
 
     def get_followers(self, how_many_followers):
@@ -43,7 +42,6 @@ class UserPage:
             follower_usernames.append(follower_username)
 
         return set(follower_usernames)
-
 
     def send_follow_request(self, acc_to_follow):
         follow_button = self.browser.find_element_by_xpath("//button[@type='button' and text()='Follow']")
