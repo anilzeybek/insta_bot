@@ -19,12 +19,14 @@
     <a href="clean">Temizle</a>
 </header>
 
-<ul class="list-group">
-    {{#each users}}
-        <li class="list-group-item">{{this.account}}</li>
-    {{/each}}
-</ul>
+{{#each users}}
+<div>
+    <a href="https://www.instagram.com/{{this.account}}/" >{{this.account}}</a>
+    <button type="button" class="btn-close" aria-label="Close" id="{{this.account}}"></button>
+</div>
+{{/each}}
 
+<script src="js/clean.js"></script>
 </body>
 
 </html>

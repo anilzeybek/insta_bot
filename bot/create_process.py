@@ -175,12 +175,15 @@ def find_hashtags(login_user, login_password, hashtags):
         post_links = hashtag_page.get_post_links()
 
         for post_link in post_links:
-            post_page.go_post(post_link)
+            try:
+                post_page.go_post(post_link)
 
-            username = post_page.get_username()
-            usernames.add(username)
+                username = post_page.get_username()
+                usernames.add(username)
+            except Exception as e:
+                logging.warning(e)
 
-    for username in usernames:
+    for username in list(set(usernames)):
         add_user(username)
 
 

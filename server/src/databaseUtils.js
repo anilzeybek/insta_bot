@@ -50,8 +50,18 @@ function getUsers() {
     })
 }
 
+function removeUser(username) {
+    return new Promise((resolve, reject) => {
+        db.run(`DELETE FROM users WHERE account=?`, username, err => {
+            if (err) reject(err)
+            else resolve()
+        })
+    })
+}
+
 exports.getLikes = getLikes
 exports.getRequests = getRequests
 exports.getDm = getDm
 exports.getBlacklist = getBlacklist
 exports.getUsers = getUsers
+exports.removeUser = removeUser

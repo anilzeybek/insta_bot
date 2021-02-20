@@ -95,7 +95,12 @@ app.post("/settings", (req, res) => {
 
 app.get("/clean", async (req, res) => {
     const users = await databaseUtils.getUsers()
-    res.render("clean", {users})
+    res.render("clean", { users })
+})
+
+app.post("/clean", async (req, res) => {
+    await databaseUtils.removeUser(req.body.username)
+    res.send({})
 })
 
 app.get('*', (req, res) => {
