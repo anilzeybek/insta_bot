@@ -94,7 +94,6 @@ def check_user(user_page, post_page, dm_page, look_followers, how_many_followers
 
                     like_or_follow_request_or_dm(user_page, post_page, dm_page, target_users)
                     user_page.go_user(username)
-
                 else:
                     return True
 
@@ -119,8 +118,10 @@ def create_process(login_user, login_password, look_followers, how_many_follower
         if (datetime.now() - reset_time).total_seconds() > 70000:
             logging.warning("Resetting remaining requests, likes and dm")
             reset_time = datetime.now()
+
             REMAINING_REQUESTS, REMAINING_LIKES, REMAINING_DM = daily_request_limit, daily_like_limit, daily_dm_limit
             messages = messages_init
+            random.shuffle(user_list)
 
         for username in user_list:
             try:
