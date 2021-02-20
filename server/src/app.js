@@ -103,6 +103,16 @@ app.post("/clean", async (req, res) => {
     res.send({})
 })
 
+app.get("/downloadUsers", async (req, res) => {
+    let users = await databaseUtils.getUsers()
+    users = users.map(user => user.account)
+    users = users.join('\n')
+
+    fs.writeFileSync("./users.txt", users)
+
+    res.download('./users.txt')
+})
+
 app.get('*', (req, res) => {
     res.send('404')
 })

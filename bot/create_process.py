@@ -121,8 +121,11 @@ def create_process(login_user, login_password, look_followers, how_many_follower
             reset_time = datetime.now()
 
             REMAINING_REQUESTS, REMAINING_LIKES, REMAINING_DM = daily_request_limit, daily_like_limit, daily_dm_limit
-            messages = messages_init
             random.shuffle(user_list)
+            random.shuffle(messages_init)
+
+            messages = messages_init
+
 
         for username in user_list:
             try:
