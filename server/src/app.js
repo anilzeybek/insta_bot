@@ -21,9 +21,11 @@ app.set('views', viewsPath)
 
 app.use(express.static(publicDirPath))
 app.use(bodyParser.json())
+
+const password = fs.readFileSync("./password.txt")
 app.use(basicAuth({
     challenge: true,
-    users: {'admin': 'sifre1234'}
+    users: {'admin': password.toString()}
 }));
 
 
@@ -80,6 +82,15 @@ app.get('/download', async (req, res) => {
     fs.writeFileSync("./blacklist.json", JSON.stringify(blacklist))
 
     res.download('./blacklist.json')
+})
+
+app.get("/settings", (req, res) => {
+    res.render("settings")
+})
+
+app.post("/settings", (req, res) => {
+    res.send({})
+    fs.writeFileSync("./password.txt", req.body.newPassword)
 })
 
 app.get('*', (req, res) => {

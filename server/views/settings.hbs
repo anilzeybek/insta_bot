@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="css/styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-    <title>Çalışan botlar</title>
+    <title>Ayarlar</title>
 </head>
 
 <body>
@@ -17,15 +17,23 @@
     <a href="/settings">Ayarlar</a>
 </header>
 
-{{#each usernames}}
-    <div class="card" style="width: 18rem;">
-        <div class="card-body">
-            <h5 class="card-title">{{this.username}}</h5>
-            <a href="/exitProcess/{{this.username}}" class="btn btn-danger">Durdur</a>
-        </div>
-    </div>
-{{/each}}
+<form>
+    <ul class="form-style-1">
+        <li>
+            <label>Yeni şifre</label>
+            <input type="password" class="field-divided" id="newPassword1"/>
+        </li>
+        <li>
+            <label>Yeni şifre tekrar</label>
+            <input type="password" class="field-divided" id="newPassword2"/>
+        </li>
+        <li>
+            <input type="submit" value="Şifreyi değiştir"/>
+        </li>
+    </ul>
+</form>
 
+<script src="js/passwordChange.js"></script>
 </body>
 
 </html>
