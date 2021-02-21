@@ -46,8 +46,10 @@ class PostPage:
             add_like(self.logged_user, post_owner)
         except Exception as e:
             sleep(10)
+            return False
 
         sleep(3)
+        return True
 
     def go_post(self, link):
         self.browser.get(link)

@@ -40,16 +40,17 @@ def like_or_follow_request_or_dm(user_page, post_page, dm_page, target_users):
             locked_acc = user_page.go_user(user)
 
             if not locked_acc and REMAINING_LIKES > 0:
-                post_no = random.randint(1, 5)
+                post_no = random.randint(1, 3)
 
                 user_page.go_post(post_no)
-                post_page.like_post(user)
+                result = post_page.like_post(user)
 
-                add_blacklist(user)
-                REMAINING_LIKES -= 1
+                if result:
+                    add_blacklist(user)
+                    REMAINING_LIKES -= 1
 
-                logging.warning(f"liked post of {user}")
-                logging.warning(f"remaining likes: {REMAINING_LIKES}")
+                    logging.warning(f"liked post of {user}")
+                    logging.warning(f"remaining likes: {REMAINING_LIKES}")
             elif locked_acc and REMAINING_REQUESTS > 0:
                 user_page.send_follow_request(user)
 
