@@ -24,8 +24,13 @@ MAX_TIME = 0
 logging.basicConfig(filename='../logfile.log', level=logging.WARNING, format='%(asctime)s %(message)s', datefmt='%d/%m/%Y %H:%M:%S')
 options = Options()
 options.headless = True
-browser = webdriver.Firefox(options=options, executable_path="../geckodriver", service_log_path='/dev/null')
-browser.implicitly_wait(5)
+
+firefox_profile = webdriver.FirefoxProfile()
+firefox_profile.set_preference('permissions.default.image', 2)
+firefox_profile.set_preference('dom.ipc.plugins.enabled.libflashplayer.so', 'false')
+
+browser = webdriver.Firefox(options=options, executable_path="../geckodriver", service_log_path='/dev/null', firefox_profile=firefox_profile)
+browser.implicitly_wait(3)
 
 user_list = []
 messages_init = []
@@ -176,7 +181,15 @@ def find_hashtags(login_user, login_password, hashtags):
 
     for hashtag in hashtags:
         hashtag_page.go_hashtag(hashtag)
-        post_links = hashtag_page.get_post_links()
+
+        post_links = set()
+        for _ in range(250):
+            try:
+                for post_link in hashtag_page.get_post_links():
+                    post_links.add(post_link)
+                hashtag_page.load_posts()
+            except Exception as e:
+                pass
 
         for post_link in post_links:
             try:
@@ -187,7 +200,7 @@ def find_hashtags(login_user, login_password, hashtags):
             except Exception as e:
                 logging.warning(e)
 
-    for username in list(set(usernames)):
+    for username in list(usernames):
         add_user(username)
 
 

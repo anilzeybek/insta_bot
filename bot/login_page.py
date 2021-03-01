@@ -23,8 +23,7 @@ class LoginPage:
 
         login_button = self.browser.find_element_by_xpath("//button[@type='submit']")
         login_button.click()
-
-        sleep(6)
+        sleep(3)
 
         unusual_login_error = self.browser.find_elements_by_xpath("//h2[text()='We Detected An Unusual Login Attempt']")
         if unusual_login_error:
