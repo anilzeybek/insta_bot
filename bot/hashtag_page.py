@@ -8,11 +8,11 @@ class HashtagPage:
     def _load_posts(self):
         for _ in range(20):
             self.browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-            sleep(3)
+            sleep(1)
 
     def go_hashtag(self, hashtag):
         self.browser.get(f"https://www.instagram.com/explore/tags/{hashtag}")
-        sleep(6)
+        sleep(1)
 
         self._load_posts()
 
