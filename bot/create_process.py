@@ -182,7 +182,7 @@ def find_hashtags(login_user, login_password, hashtags):
         hashtag_page.go_hashtag(hashtag)
 
         visited_posts = []
-        for _ in range(250):
+        for _ in range(300):
             try:
                 for link in hashtag_page.get_post_links():
                     if link.get_attribute('href') not in visited_posts:
@@ -199,6 +199,8 @@ def find_hashtags(login_user, login_password, hashtags):
                 hashtag_page.load_posts()
             except Exception as e:
                 logging.warning(e)
+
+    logging.warning("Searching hashtags finished")
 
 
 def main():

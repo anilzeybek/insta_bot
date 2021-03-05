@@ -11,7 +11,7 @@ class HashtagPage:
 
     def go_hashtag(self, hashtag):
         self.browser.get(f"https://www.instagram.com/explore/tags/{hashtag}")
-        sleep(0.5)
+        sleep(1)
 
     def get_post_links(self):
         posts = self.browser.find_elements_by_xpath("//article/div/div/div/div/a")
