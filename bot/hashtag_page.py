@@ -14,7 +14,5 @@ class HashtagPage:
         sleep(0.5)
 
     def get_post_links(self):
-        links = self.browser.find_elements_by_xpath("//article/div/div/div/div/a")
-        links = list(map(lambda x: x.get_attribute('href'), links))
-        
-        return links
+        posts = self.browser.find_elements_by_xpath("//article/div/div/div/div/a")
+        return posts

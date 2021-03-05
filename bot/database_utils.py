@@ -70,10 +70,13 @@ def in_blacklist(account):
 
 
 def add_user(user):
-    c.execute("INSERT INTO users (account) VALUES (?)", (user, ))
-    conn.commit()
+    try:
+        c.execute("INSERT INTO users (account) VALUES (?)", (user, ))
+        conn.commit()
 
-    logging.warning(f"{user} has been added to users")
+        logging.warning(f"{user} has been added to users")
+    except:
+        pass
 
 
 def close_conn():

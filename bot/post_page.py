@@ -56,4 +56,8 @@ class PostPage:
         sleep(0.2)
 
     def get_username(self):
-        return self.browser.find_element_by_xpath("//article//span/a").text
+        return self.browser.find_element_by_xpath("//article/header/div//span/a").text
+
+    def close_post(self):
+        close_button = self.browser.find_element_by_xpath("/html/body/div/div/button/div")
+        close_button.click()

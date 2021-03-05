@@ -1,5 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.common.keys import Keys
 from login_page import LoginPage
 from user_page import UserPage
 from post_page import PostPage
@@ -132,7 +133,6 @@ def create_process(login_user, login_password, look_followers, how_many_follower
 
             messages = messages_init
 
-
         for username in user_list:
             try:
                 logging.warning(f"going to target user {username}")
@@ -177,31 +177,27 @@ def find_hashtags(login_user, login_password, hashtags):
     post_page = PostPage(browser, login_user)
 
     login_page.login()
-    usernames = set()
 
     for hashtag in hashtags:
         hashtag_page.go_hashtag(hashtag)
 
-        post_links = set()
+        visited_posts = []
         for _ in range(250):
             try:
-                for post_link in hashtag_page.get_post_links():
-                    post_links.add(post_link)
+                for link in hashtag_page.get_post_links():
+                    if link.get_attribute('href') not in visited_posts:
+                        post = link.find_element_by_xpath('..')
+                        post.click()
+
+                        username = post_page.get_username()
+                        add_user(username)
+
+                        visited_posts.append(link.get_attribute('href'))
+                        post_page.close_post()
+
                 hashtag_page.load_posts()
             except Exception as e:
-                pass
-
-        for post_link in post_links:
-            try:
-                post_page.go_post(post_link)
-
-                username = post_page.get_username()
-                usernames.add(username)
-            except Exception as e:
                 logging.warning(e)
-
-    for username in list(usernames):
-        add_user(username)
 
 
 def main():
