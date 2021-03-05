@@ -187,14 +187,15 @@ def find_hashtags(login_user, login_password, hashtags):
                 for link in hashtag_page.get_post_links():
                     if link.get_attribute('href') not in visited_posts:
                         post = link.find_element_by_xpath('..')
-                        post.click()
+                        try:
+                            post.click()
+                            username = post_page.get_username()
+                            add_user(username)
+                            visited_posts.append(link.get_attribute('href'))
+                        except:
+                            pass
 
-                        username = post_page.get_username()
-                        add_user(username)
-
-                        visited_posts.append(link.get_attribute('href'))
                         post_page.close_post()
-
                 hashtag_page.load_posts()
             except Exception as e:
                 logging.warning(e)
