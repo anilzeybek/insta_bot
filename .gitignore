@@ -7,4 +7,5 @@
 **/.DS_Store
 **/.log
 **/blacklist.json
+**/users.txt
 **/*.log
