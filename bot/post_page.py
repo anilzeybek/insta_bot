@@ -59,5 +59,8 @@ class PostPage:
         return self.browser.find_element_by_xpath("//article/header/div//span/a").text
 
     def close_post(self):
-        close_button = self.browser.find_element_by_xpath("/html/body/div/div/button/div")
-        close_button.click()
+        try:
+            close_button = self.browser.find_element_by_xpath("/html/body/div/div/button/div")
+            close_button.click()
+        except:
+            pass

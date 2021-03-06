@@ -178,27 +178,28 @@ def find_hashtags(login_user, login_password, hashtags):
 
     login_page.login()
 
-    for hashtag in hashtags:
-        hashtag_page.go_hashtag(hashtag)
+    while True:
+        for hashtag in hashtags:
+            hashtag_page.go_hashtag(hashtag)
 
-        visited_posts = []
-        for _ in range(300):
-            try:
-                for link in hashtag_page.get_post_links():
-                    if link.get_attribute('href') not in visited_posts:
-                        post = link.find_element_by_xpath('..')
-                        try:
-                            post.click()
-                            username = post_page.get_username()
-                            add_user(username)
-                            visited_posts.append(link.get_attribute('href'))
-                        except:
-                            pass
+            visited_posts = []
+            for _ in range(5000):
+                try:
+                    for link in hashtag_page.get_post_links():
+                        if link.get_attribute('href') not in visited_posts:
+                            post = link.find_element_by_xpath('..')
+                            try:
+                                post.click()
+                                username = post_page.get_username()
+                                add_user(username)
+                                visited_posts.append(link.get_attribute('href'))
+                            except:
+                                pass
 
-                        post_page.close_post()
-                hashtag_page.load_posts()
-            except Exception as e:
-                logging.warning(e)
+                            post_page.close_post()
+                    hashtag_page.load_posts()
+                except Exception as e:
+                    logging.warning(e)
 
     logging.warning("Searching hashtags finished")
 
