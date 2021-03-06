@@ -2,7 +2,8 @@ const {Client} = require("pg")
 const client = new Client({
     user: 'postgres',
     host: 'localhost',
-    database: 'instabot-db',
+    database: 'instabot',
+    password: 'postgres',
     port: 5432,
 });
 client.connect();

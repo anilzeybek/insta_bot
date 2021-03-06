@@ -1,12 +1,10 @@
-#import sqlite3
 import psycopg2
 import logging
 
 
 logging.basicConfig(filename='../logfile.log', level=logging.WARNING, format='%(asctime)s %(message)s', datefmt='%d/%m/%Y %H:%M:%S')
 
-conn = psycopg2.connect("dbname=instabot-db user=postgres")
-#conn = sqlite3.connect('../database.db')
+conn = psycopg2.connect("dbname=instabot user=postgres password=postgres")
 c = conn.cursor()
 
 
