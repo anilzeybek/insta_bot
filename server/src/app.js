@@ -93,12 +93,12 @@ app.post("/settings", (req, res) => {
     fs.writeFileSync("./password.txt", req.body.newPassword)
 })
 
-app.get("/clean", async (req, res) => {
+app.get("/hashtag", async (req, res) => {
     const users = await databaseUtils.getUsers()
-    res.render("clean", { users })
+    res.render("hashtag", { users })
 })
 
-app.post("/clean", async (req, res) => {
+app.post("/hashtag", async (req, res) => {
     await databaseUtils.removeUser(req.body.username)
     res.send({})
 })

@@ -1,6 +1,6 @@
 document.querySelectorAll('button').forEach(item => {
     item.addEventListener('click', async function() {
-        await fetch(`/clean`, {
+        await fetch(`/hashtag`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

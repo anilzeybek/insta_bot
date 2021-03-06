@@ -1,9 +1,9 @@
 div.sticky {
-    position: -webkit-sticky;
-    position: sticky;
-    top: 0;
+    position:sticky;
+    top: 0px;
     background-color: lightcoral;
     padding: 15px;
+    padding-top: 70px;
 }
 
 a:link {
