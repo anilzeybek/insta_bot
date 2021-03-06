@@ -6,12 +6,12 @@ div.sticky {
     padding-top: 70px;
 }
 
-a:link {
+a.hashtag-link:link {
     color: red;
     text-decoration: none;
 }
   
-a:visited {
+a.hashtag-link:visited {
     color: green;
     text-decoration: none;
 }
