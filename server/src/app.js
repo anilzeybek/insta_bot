@@ -55,14 +55,14 @@ app.get("/reports", async (req, res) => {
     const blacklist = await databaseUtils.getBlacklist()
 
     const data = {
-        likes,
-        likesLength: likes.length,
-        requests,
-        requestsLength: requests.length,
-        dm,
-        dmLength: dm.length,
-        blacklist,
-        blacklistLength: blacklist.length
+        likes: likes.rows,
+        likesLength: likes.rows.length,
+        requests: requests.rows,
+        requestsLength: requests.rows.length,
+        dm : dm.rows,
+        dmLength: dm.rows.length,
+        blacklist: blacklist.rows,
+        blacklistLength: blacklist.rows.length
     }
 
     res.render("reports", data)
@@ -79,7 +79,7 @@ app.post('/requests', (req, res) => {
 
 app.get('/download', async (req, res) => {
     const blacklist = await databaseUtils.getBlacklist()
-    fs.writeFileSync("./blacklist.json", JSON.stringify(blacklist))
+    fs.writeFileSync("./blacklist.json", JSON.stringify(blacklist.rows))
 
     res.download('./blacklist.json')
 })
@@ -95,7 +95,7 @@ app.post("/settings", (req, res) => {
 
 app.get("/hashtag", async (req, res) => {
     const users = await databaseUtils.getUsers()
-    res.render("hashtag", { users })
+    res.render("hashtag", { users: users.rows })
 })
 
 app.post("/hashtag", async (req, res) => {
@@ -105,7 +105,7 @@ app.post("/hashtag", async (req, res) => {
 
 app.get("/downloadUsers", async (req, res) => {
     let users = await databaseUtils.getUsers()
-    users = users.map(user => user.account)
+    users = users.rows.map(user => user.account)
     users = users.join('\n')
 
     fs.writeFileSync("./users.txt", users)

@@ -1,9 +1,12 @@
-import sqlite3
+#import sqlite3
+import psycopg2
 import logging
 
 
 logging.basicConfig(filename='../logfile.log', level=logging.WARNING, format='%(asctime)s %(message)s', datefmt='%d/%m/%Y %H:%M:%S')
-conn = sqlite3.connect('../database.db')
+
+conn = psycopg2.connect("dbname=instabot-db user=postgres")
+#conn = sqlite3.connect('../database.db')
 c = conn.cursor()
 
 
@@ -36,7 +39,7 @@ def find_follow_requests(requester_account, days):
     usernames = []
 
     c.execute(
-        f"SELECT requested_account FROM follow_requests WHERE requester_account = ? AND request_date < datetime('now', '-{days} days')",
+        f"SELECT requested_account FROM follow_requests WHERE requester_account = ? AND request_date < to_timestamp('now', '-{days} days')",
         (requester_account,))
     rows = c.fetchall()
 

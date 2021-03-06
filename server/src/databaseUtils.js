@@ -1,62 +1,60 @@
-const sqlite3 = require("sqlite3").verbose()
-
-const db = new sqlite3.Database('../database.db', (err) => {
-    if (err) console.error(err.message);
-    console.log('Connected to database.');
+const {Client} = require("pg")
+const client = new Client({
+    user: 'postgres',
+    host: 'localhost',
+    database: 'instabot-db',
+    port: 5432,
 });
+client.connect();
 
-function getLikes() {
-    return new Promise((resolve, reject) => {
-        db.all("SELECT * FROM likes", (err, rows) => {
-            if (err) reject(err)
-            else resolve(rows)
-        })
-    })
+
+async function getLikes() {
+    try {
+        const res = await client.query("SELECT * FROM likes");
+        return res;
+    } catch (err) {
+        console.log(err.stack);
+    }
 }
 
-function getRequests() {
-    return new Promise((resolve, reject) => {
-        db.all("SELECT * FROM follow_requests", (err, rows) => {
-            if (err) reject(err)
-            else resolve(rows)
-        })
-    })
+async function getRequests() {
+    try {
+        const res = await client.query("SELECT * FROM follow_requests");
+        return res;
+    } catch (err) {
+        console.log(err.stack);
+    }
 }
 
-function getDm() {
-    return new Promise((resolve, reject) => {
-        db.all("SELECT * FROM dm", (err, rows) => {
-            if (err) reject(err)
-            else resolve(rows)
-        })
-    })
+async function getDm() {
+    try {
+        const res = await client.query("SELECT * FROM dm");
+        return res;
+    } catch (err) {
+        console.log(err.stack);
+    }
 }
 
-function getBlacklist() {
-    return new Promise((resolve, reject) => {
-        db.all("SELECT * FROM blacklist", (err, rows) => {
-            if (err) reject(err)
-            else resolve(rows)
-        })
-    })
+async function getBlacklist() {
+    try {
+        const res = await client.query("SELECT * FROM blacklist");
+        return res;
+    } catch (err) {
+        console.log(err.stack);
+    }
 }
 
-function getUsers() {
-    return new Promise((resolve, reject) => {
-        db.all("SELECT * FROM users", (err, rows) => {
-            if (err) reject(err)
-            else resolve(rows)
-        })
-    })
+async function getUsers() {
+    try {
+        const res = await client.query("SELECT * FROM users");
+        return res;
+    } catch (err) {
+        console.log(err.stack);
+    }
 }
 
-function removeUser(username) {
-    return new Promise((resolve, reject) => {
-        db.run(`DELETE FROM users WHERE account=?`, username, err => {
-            if (err) reject(err)
-            else resolve()
-        })
-    })
+async function removeUser(username) {
+    await client.query(`DELETE FROM users WHERE account=${username}`)
 }
 
 exports.getLikes = getLikes
