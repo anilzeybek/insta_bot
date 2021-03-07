@@ -119,7 +119,7 @@ app.get("/downloadUsers", async (req, res) => {
 
 app.get("/dmProfile", async (req, res) => {
     const profiles = await databaseUtils.getDmProfiles()
-    res.render("dmProfile", profiles)
+    res.render("dmProfile", {data: profiles})
 })
 
 app.get("/createDmProfile", async (req, res) => {
@@ -127,7 +127,7 @@ app.get("/createDmProfile", async (req, res) => {
 })
 
 app.post("/createDmProfile", async (req, res) => {
-    await databaseUtils.addDmProfile(req.body.data)
+    await databaseUtils.addDmProfile(req.body)
     res.send({})
 })
 

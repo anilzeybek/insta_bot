@@ -12,11 +12,13 @@
     {{>navbar}}
     <a href="/createDmProfile" class="btn btn-primary">Yeni profil oluştur</a>
     
-    {{#each profiles}}
-        <div class="card" style="width: 18rem;">
+    {{#each data}}
+        <div class="card" style="width: 18rem; margin-top: 10px">
             <div class="card-body">
-                <h5 class="card-title">{{this.name}}</h5>
-                <p class="card-text">{{this.number}}</p>
+                <h4 class="card-title">{{@key}}</h5>
+                {{#each this}}
+                    <p class="card-text">{{this}}</p>
+                {{/each}}
             </div>
         </div>
     {{/each}}

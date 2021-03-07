@@ -1,4 +1,4 @@
-const {Client} = require("pg")
+const { Client } = require("pg")
 const client = new Client({
     // user: 'postgres',
     user: 'anilzeybek',
@@ -65,16 +65,22 @@ async function getDmProfiles() {
 
         const result = {}
         res.rows.forEach(row => {
-            if (row[0] in result)  {
-                result[row[0]] = [row[1]]
+            if (!(row.profile_name in result)) {
+                result[row.profile_name] = [row.dm_message]
             } else {
-                result[row[0]].push(row[1])
+                result[row.profile_name].push(row.dm_message)
             }
         })
 
         return result
     } catch (err) {
         console.log(err.stack);
+    }
+}
+
+async function addDmProfile(profile) {
+    for (const message of profile.messages) {
+        await client.query(`INSERT INTO dm_profiles(profile_name, dm_message) VALUES('${profile.profileName}', '${message}')`)
     }
 }
 
@@ -85,3 +91,4 @@ exports.getBlacklist = getBlacklist
 exports.getUsers = getUsers
 exports.removeUser = removeUser
 exports.getDmProfiles = getDmProfiles
+exports.addDmProfile = addDmProfile

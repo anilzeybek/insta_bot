@@ -1,5 +1,3 @@
-// TODO: burayı komple doldur
-
 const form = document.querySelector('form')
 const profileName = document.querySelector('#profile-name')
 const messageArea = document.querySelector('.message-area')
@@ -34,4 +32,6 @@ form.addEventListener('submit', async e => {
         },
         body: JSON.stringify(data)
     })
+
+    window.location.href = '/dmProfile'
 })
