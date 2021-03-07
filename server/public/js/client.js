@@ -6,6 +6,7 @@ const hashtagsLi = document.querySelector('#hashtagsLi')
 const hashtags = document.querySelector('#hashtags')
 const requestLimit = document.querySelector('#requestLimit')
 const likeLimit = document.querySelector('#likeLimit')
+const dmProfile = document.querySelector("#profile-name")
 const targets = document.querySelector('#targets')
 const lookFollowers = document.querySelector('#lookFollowers')
 const howManyFollowers = document.querySelector("#howManyFollowers")
@@ -62,6 +63,7 @@ processForm.addEventListener('submit', async e => {
             password: password.value,
             requestLimit: parseInt(requestLimit.value),
             likeLimit: parseInt(likeLimit.value),
+            dmProfile: dmProfile.value,
             minTime: parseInt(minTime.value),
             maxTime: parseInt(maxTime.value),
             targets: targets.value,

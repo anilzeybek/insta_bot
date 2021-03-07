@@ -38,8 +38,10 @@ app.get('/', (req, res) => {
     res.render("index", runningProcesses)
 })
 
-app.get('/process', (req, res) => {
-    res.render("process")
+app.get('/process', async (req, res) => {
+    const dmProfiles = await databaseUtils.getDmProfiles()
+    const dmProfileNames = Object.keys(dmProfiles)
+    res.render("process", {names: dmProfileNames})
 })
 
 app.post('/process', (req, res) => {
