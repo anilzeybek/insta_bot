@@ -10,18 +10,7 @@
 
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
-  <a class="navbar-brand" href="/">Çalışan botlar</a>
-  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-    <div class="navbar-nav">
-      <a class="nav-item nav-link active" href="/process">Yeni bot oluştur</a>
-      <a class="nav-item nav-link" href="/reports">Raporlar</a>
-      <a class="nav-item nav-link" href="/requests">Takip İstekleri</a>
-      <a class="nav-item nav-link" href="/settings">Ayarlar</a>
-      <a class="nav-item nav-link" href="/hashtag">Hashtag</a>
-    </div>
-  </div>
-</nav>
+{{>navbar}}
 
 {{#each usernames}}
     <div class="card" style="width: 18rem;">

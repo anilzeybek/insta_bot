@@ -1,6 +1,5 @@
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
-from selenium.webdriver.common.keys import Keys
 from login_page import LoginPage
 from user_page import UserPage
 from post_page import PostPage
@@ -200,8 +199,6 @@ def find_hashtags(login_user, login_password, hashtags):
                     hashtag_page.load_posts()
                 except Exception as e:
                     logging.warning(e)
-
-    logging.warning("Searching hashtags finished")
 
 
 def main():

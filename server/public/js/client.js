@@ -1,5 +1,3 @@
-console.log('Client side js file loaded')
-
 const processForm = document.querySelector('form')
 const username = document.querySelector('#username')
 const password = document.querySelector('#password')
@@ -76,10 +74,7 @@ processForm.addEventListener('submit', async e => {
         
     } else {
         let messages = document.querySelectorAll(".messages")
-        if (!username.value || !password.value || !requestLimit.value || !likeLimit.value || !dmLimit.value || !targets.value || (!keywords.value && !lookFollowers.checked)|| !minTime.value || !maxTime.value) {
-            alert("Bütün alanları doldurun")
-            return
-        }
+        // TODO: kullanıcının girdiği değerleri kontrol et
     
         const messageValues = []
         messages.forEach(message => messageValues.push(message.value))

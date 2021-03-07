@@ -13,11 +13,15 @@ const PORT = process.env.PORT || 3000
 
 // Defining paths for Express config
 const publicDirPath = path.join(__dirname, '../public')
-const viewsPath = path.join(__dirname, '../views')
+const viewsPath = path.join(__dirname, '../templates/views')
+const partialsPath = path.join(__dirname, '../templates/partials')
+
 
 // Settings for hbs
 app.set('view engine', 'hbs')
 app.set('views', viewsPath)
+hbs.registerPartials(partialsPath)
+
 
 app.use(express.static(publicDirPath))
 app.use(bodyParser.json())
@@ -59,7 +63,7 @@ app.get("/reports", async (req, res) => {
         likesLength: likes.rows.length,
         requests: requests.rows,
         requestsLength: requests.rows.length,
-        dm : dm.rows,
+        dm: dm.rows,
         dmLength: dm.rows.length,
         blacklist: blacklist.rows,
         blacklistLength: blacklist.rows.length

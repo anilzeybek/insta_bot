@@ -1,9 +1,23 @@
 div.sticky {
     position:sticky;
     top: 0px;
-    background-color: lightcoral;
+    background-color:#F8F9FA;
     padding: 15px;
     padding-top: 70px;
+}
+
+.password-bs {
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    border: 1px solid #BEBEBE;
+    padding: 7px;
+    margin: 0;
+    -webkit-transition: all 0.30s ease-in-out;
+    -moz-transition: all 0.30s ease-in-out;
+    -ms-transition: all 0.30s ease-in-out;
+    -o-transition: all 0.30s ease-in-out;
+    outline: none;
 }
 
 a.hashtag-link:link {
