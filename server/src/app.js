@@ -41,7 +41,7 @@ app.get('/', (req, res) => {
 app.get('/process', async (req, res) => {
     const dmProfiles = await databaseUtils.getDmProfiles()
     const dmProfileNames = Object.keys(dmProfiles)
-    res.render("process", {names: dmProfileNames})
+    res.render("process", { names: dmProfileNames })
 })
 
 app.post('/process', (req, res) => {
@@ -121,7 +121,7 @@ app.get("/downloadUsers", async (req, res) => {
 
 app.get("/dmProfile", async (req, res) => {
     const profiles = await databaseUtils.getDmProfiles()
-    res.render("dmProfile", {data: profiles})
+    res.render("dmProfile", { data: profiles })
 })
 
 app.get("/createDmProfile", async (req, res) => {
@@ -131,6 +131,11 @@ app.get("/createDmProfile", async (req, res) => {
 app.post("/createDmProfile", async (req, res) => {
     await databaseUtils.addDmProfile(req.body)
     res.send({})
+})
+
+app.get("/summary", async (req, res) => {
+    const summaries = await databaseUtils.getSummaries()
+    res.render("summary", { summary: summaries.rows })
 })
 
 app.get('*', (req, res) => {

@@ -1,11 +1,11 @@
 from time import sleep
-from database_utils import add_like
 
 
 class PostPage:
-    def __init__(self, browser, logged_user):
+    def __init__(self, browser, logged_user, database_utils):
         self.browser = browser
         self.logged_user = logged_user
+        self.database_utils = database_utils
 
     def _load_all_comments(self):
         for _ in range(15):
@@ -43,7 +43,7 @@ class PostPage:
             like_button = self.browser.find_element_by_xpath("//span/*[name()='svg'][@aria-label='Like']")
             like_button.click()
 
-            add_like(self.logged_user, post_owner)
+            self.database_utils.add_like(self.logged_user, post_owner)
         except Exception as e:
             sleep(10)
             return False

@@ -84,6 +84,15 @@ async function addDmProfile(profile) {
     }
 }
 
+async function getSummaries() {
+    try {
+        const res = await client.query(`SELECT * FROM summary`)
+        return res
+    } catch (err) {
+        console.log(err.stack);
+    }
+}
+
 exports.getLikes = getLikes
 exports.getRequests = getRequests
 exports.getDm = getDm
@@ -92,3 +101,4 @@ exports.getUsers = getUsers
 exports.removeUser = removeUser
 exports.getDmProfiles = getDmProfiles
 exports.addDmProfile = addDmProfile
+exports.getSummaries = getSummaries

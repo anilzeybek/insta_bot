@@ -6,7 +6,7 @@ function createProcess(data) {
     fs.writeFileSync("../options.json", JSON.stringify(data))
 
     const spawn = require("child_process").spawn;
-    const pythonProcess = spawn('python3', ["../bot/create_process.py", "options.json"]);
+    const pythonProcess = spawn('python3', ["../bot/create_process.py", "false"]);
 
     runningProcesses.push({
         username: data.username,
@@ -31,7 +31,7 @@ function createProcess(data) {
 }
 
 function getProcesses() {
-    return {usernames: runningProcesses}
+    return { usernames: runningProcesses }
 }
 
 function exitProcess(username) {

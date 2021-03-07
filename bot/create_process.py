@@ -6,7 +6,7 @@ from post_page import PostPage
 from hashtag_page import HashtagPage
 from dm_page import DmPage
 import random
-from database_utils import add_blacklist, in_blacklist, find_follow_requests, delete_follow_request, add_user, get_dm_profile
+from database_utils import DatabaseUtils
 from datetime import datetime
 from time import sleep
 import sys
@@ -23,7 +23,7 @@ MAX_TIME = 0
 
 logging.basicConfig(filename='../logfile.log', level=logging.WARNING, format='%(asctime)s %(message)s', datefmt='%d/%m/%Y %H:%M:%S')
 options = Options()
-options.headless = True
+options.headless = False if len(sys.argv) == 2 else True
 
 firefox_profile = webdriver.FirefoxProfile()
 firefox_profile.set_preference('permissions.default.image', 2)
@@ -36,12 +36,14 @@ user_list = []
 messages_init = []
 messages = []
 
+database_utils = DatabaseUtils()
+
 
 def like_or_follow_request_or_dm(user_page, post_page, dm_page, target_users):
     global REMAINING_REQUESTS, REMAINING_LIKES, REMAINING_DM
 
     for user in target_users:
-        if not in_blacklist(user) and user not in user_list:
+        if not database_utils.in_blacklist(user) and user not in user_list:
             locked_acc = user_page.go_user(user)
 
             if not locked_acc and REMAINING_LIKES > 0:
@@ -51,7 +53,7 @@ def like_or_follow_request_or_dm(user_page, post_page, dm_page, target_users):
                 result = post_page.like_post(user)
 
                 if result:
-                    add_blacklist(user)
+                    database_utils.add_blacklist(user)
                     REMAINING_LIKES -= 1
 
                     logging.warning(f"liked post of {user}")
@@ -59,7 +61,7 @@ def like_or_follow_request_or_dm(user_page, post_page, dm_page, target_users):
             elif locked_acc and REMAINING_REQUESTS > 0:
                 user_page.send_follow_request(user)
 
-                add_blacklist(user)
+                database_utils.add_blacklist(user)
                 REMAINING_REQUESTS -= 1
 
                 logging.warning(f"follow request sent to {user}")
@@ -67,7 +69,7 @@ def like_or_follow_request_or_dm(user_page, post_page, dm_page, target_users):
             elif locked_acc and REMAINING_DM > 0:
                 dm_page.send_message(user, messages.pop(0))
 
-                add_blacklist(user)
+                database_utils.add_blacklist(user)
                 REMAINING_DM -= 1
 
                 logging.warning(f"dm sent to {user}")
@@ -112,9 +114,9 @@ def create_process(login_user, login_password, look_followers, how_many_follower
     global REMAINING_REQUESTS, REMAINING_LIKES, REMAINING_DM, messages, messages_init, user_list
 
     login_page = LoginPage(browser, login_user, login_password)
-    user_page = UserPage(browser, login_user)
-    post_page = PostPage(browser, login_user)
-    dm_page = DmPage(browser, login_user)
+    user_page = UserPage(browser, login_user, database_utils)
+    post_page = PostPage(browser, login_user, database_utils)
+    dm_page = DmPage(browser, login_user, database_utils)
 
     login_page.login()
 
@@ -153,7 +155,7 @@ def undo_request(login_user, login_password, days):
     user_page = UserPage(browser, login_user)
 
     login_page.login()
-    usernames = find_follow_requests(login_user, days)
+    usernames = database_utils.find_follow_requests(login_user, days)
     logging.warning("undo people: ", usernames)
 
     for username in usernames:
@@ -162,7 +164,7 @@ def undo_request(login_user, login_password, days):
 
             user_page.go_user(username)
             user_page.undo_follow_request()
-            delete_follow_request(login_user, username)
+            database_utils.delete_follow_request(login_user, username)
 
             sleep(random.randint(MIN_TIME, MAX_TIME))
         except Exception as e:
@@ -190,7 +192,7 @@ def find_hashtags(login_user, login_password, hashtags):
                             try:
                                 post.click()
                                 username = post_page.get_username()
-                                add_user(username)
+                                database_utils.add_user(username)
                                 visited_posts.append(link.get_attribute('href'))
                             except:
                                 pass
@@ -204,8 +206,7 @@ def find_hashtags(login_user, login_password, hashtags):
 def main():
     global MIN_TIME, MAX_TIME, messages, messages_init, user_list
 
-    filename = sys.argv[1]
-    with open(f"../{filename}") as json_file:
+    with open(f"../options.json") as json_file:
         json_content = json.load(json_file)
 
         login_user = json_content["username"]
@@ -234,8 +235,8 @@ def main():
             look_followers = json_content["lookFollowers"]
             how_many_followers = json_content["howManyFollowers"]
             keywords = json_content["keywords"].split("\n")
-            messages = get_dm_profile(json_content["dmProfile"])
-            messages_init = get_dm_profile(json_content["dmProfile"])
+            messages = database_utils.get_dm_profile(json_content["dmProfile"])
+            messages_init = database_utils.get_dm_profile(json_content["dmProfile"])
 
             daily_request_limit = json_content["requestLimit"]
             daily_like_limit = json_content["likeLimit"]

@@ -1,11 +1,11 @@
 from time import sleep
-from database_utils import add_follow_request
 
 
 class UserPage:
-    def __init__(self, browser, logged_user):
+    def __init__(self, browser, logged_user, database_utils):
         self.browser = browser
         self.logged_user = logged_user
+        self.database_utils = database_utils
 
     def go_user(self, username):
         self.browser.get(f"https://www.instagram.com/{username}/")
@@ -47,7 +47,7 @@ class UserPage:
         follow_button = self.browser.find_element_by_xpath("//button[@type='button' and text()='Follow']")
         follow_button.click()
 
-        add_follow_request(self.logged_user, acc_to_follow)
+        self.database_utils.add_follow_request(self.logged_user, acc_to_follow)
 
         sleep(3)
 

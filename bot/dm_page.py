@@ -1,11 +1,11 @@
 from time import sleep
-from database_utils import add_dm
 
 
 class DmPage:
-    def __init__(self, browser, logged_user):
+    def __init__(self, browser, logged_user, database_utils):
         self.browser = browser
         self.logged_user = logged_user
+        self.database_utils = database_utils
 
     def send_message(self, user, message):
         self.browser.get("https://www.instagram.com/direct/new/")
@@ -30,4 +30,4 @@ class DmPage:
         send_button.click()
         sleep(5)
 
-        add_dm(self.logged_user, user, message)
+        self.database_utils.add_dm(self.logged_user, user, message)

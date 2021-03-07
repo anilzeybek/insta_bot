@@ -1,95 +1,100 @@
 import psycopg2
 import logging
+import uuid
 
 
-logging.basicConfig(filename='../logfile.log', level=logging.WARNING, format='%(asctime)s %(message)s', datefmt='%d/%m/%Y %H:%M:%S')
+class DatabaseUtils:
+    def __init__(self):
+        logging.basicConfig(filename='../logfile.log', level=logging.WARNING, format='%(asctime)s %(message)s', datefmt='%d/%m/%Y %H:%M:%S')
+        self.conn = psycopg2.connect(dbname="instabot", user="anilzeybek")
+        self.c = self.conn.cursor()
 
-conn = psycopg2.connect("dbname=instabot user=anilzeybek")
-c = conn.cursor()
+        logging.warning(self.conn)
 
+        self.UUID = str(uuid.uuid4())
 
-def add_like(liker_account, liked_account):
-    x = (liker_account, liked_account)
-    c.execute("INSERT INTO likes (liker_account, liked_account) VALUES (?, ?)", x)
-    conn.commit()
+    def add_like(self, liker_account, liked_account):
+        # TODO: hata firlatiyor
+        self.c.execute(f"INSERT INTO likes (liker_account, liked_account) VALUES ('{liker_account}', '{liked_account}');")
+        self.conn.commit()
 
-    logging.warning(f"{liker_account} liked {liked_account}'s post")
+        self.upsert_summary(liker_account, "sent_likes")
 
+        logging.warning(f"{liker_account} liked {liked_account}'s post")
 
-def add_follow_request(requester_account, requested_account):
-    x = (requester_account, requested_account, 0, 0)
-    c.execute("""INSERT INTO follow_requests (requester_account, requested_account, accepted, declined) 
-    VALUES (?, ?, ?, ?)""", x)
-    conn.commit()
+    def add_follow_request(self, requester_account, requested_account):
+        self.c.execute(f"INSERT INTO follow_requests (requester_account, requested_account, accepted, declined) VALUES ('{requester_account}', '{requested_account}', 0, 0);")
+        self.conn.commit()
 
-    logging.warning(f"{requester_account} send follow request to {requested_account}")
+        self.upsert_summary(requester_account, "sent_requests")
 
+        logging.warning(f"{requester_account} send follow request to {requested_account}")
 
-def add_dm(sender_account, sent_account, message):
-    x = (sender_account, sent_account, message)
-    c.execute("INSERT INTO dm (sender_account, sent_account, message) VALUES (?, ?, ?)", x)
-    conn.commit()
+    def add_dm(self, sender_account, sent_account, message):
+        self. c.execute(f"INSERT INTO dm (sender_account, sent_account, message) VALUES ('{sender_account}', '{sent_account}', '{message}');")
+        self.conn.commit()
 
-    logging.warning(f"{sender_account} send dm to {sent_account}")
+        self.upsert_summary(sender_account, "sent_dm")
 
+        logging.warning(f"{sender_account} send dm to {sent_account}")
 
-def find_follow_requests(requester_account, days):
-    usernames = []
+    def find_follow_requests(self, requester_account, days):
+        usernames = []
 
-    c.execute(
-        f"SELECT requested_account FROM follow_requests WHERE requester_account = ? AND request_date < to_timestamp('now', '-{days} days')",
-        (requester_account,))
-    rows = c.fetchall()
+        self.c.execute(f"SELECT requested_account FROM follow_requests WHERE requester_account='{requester_account}' AND request_date < to_timestamp('now', '-{days} days');")
+        rows = self.c.fetchall()
 
-    for row in rows:
-        usernames.append(row[0])
+        for row in rows:
+            usernames.append(row[0])
 
-    return usernames
+        return usernames
 
+    def delete_follow_request(self, requester_account, requested_account):
+        self.c.execute(f"DELETE FROM follow_requests WHERE requester_account='{requester_account}' AND requested_account='{requested_account}';")
+        self.conn.commit()
 
-def delete_follow_request(requester_account, requested_account):
-    x = (requester_account, requested_account)
-    c.execute("DELETE FROM follow_requests WHERE requester_account = ? AND requested_account = ?", x)
-    conn.commit()
+    def add_blacklist(self, account):
+        self.c.execute(f"INSERT INTO blacklist (account, request_declined) VALUES ('{account}', 0);")
+        self.conn.commit()
 
+        logging.warning(f"{account} has been added to blacklist")
 
-def add_blacklist(account):
-    x = (account, 0)
-    c.execute("INSERT INTO blacklist (account, request_declined) VALUES (?, ?)", x)
-    conn.commit()
+    def in_blacklist(self, account):
+        self.c.execute(f"SELECT * FROM blacklist WHERE account='{account}';")
+        if self.c.fetchone():
+            logging.warning(f"{account} is in blacklist, so skipping\n")
+            return True
 
-    logging.warning(f"{account} has been added to blacklist")
+        return False
 
+    def add_user(self, user):
+        try:
+            self.c.execute(f"INSERT INTO users (account) VALUES ('{user}');")
+            self.conn.commit()
 
-def in_blacklist(account):
-    c.execute("SELECT * FROM blacklist WHERE account = ?", (account,))
-    if c.fetchone():
-        logging.warning(f"{account} is in blacklist, so skipping\n")
-        return True
+            logging.warning(f"{user} has been added to users")
+        except:
+            pass
 
-    return False
+    def get_dm_profile(self, profile_name):
+        self.c.execute(f"SELECT * FROM dm_profiles WHERE profile_name='{profile_name}';")
+        rows = self.c.fetchall()
 
+        messages = []
+        for row in rows:
+            messages.append(row[1])
 
-def add_user(user):
-    try:
-        c.execute("INSERT INTO users (account) VALUES (?)", (user, ))
-        conn.commit()
+        return messages
 
-        logging.warning(f"{user} has been added to users")
-    except:
-        pass
+    def upsert_summary(self, account, column_name):
+        sent_likes = 1 if column_name == "sent_likes" else 0
+        sent_requests = 1 if column_name == "sent_requests" else 0
+        sent_dm = 1 if column_name == "sent_dm" else 0
 
+        self.c.execute(
+            f"INSERT INTO summary(summary_id, account, sent_likes, sent_requests, sent_dm) VALUES('{self.UUID}', '{account}', {sent_likes}, {sent_requests}, {sent_dm}) ON CONFLICT (summary_id) DO UPDATE SET {column_name} = summary.{column_name} + 1;")
+        self.conn.commit()
 
-def get_dm_profile(profile_name):
-    c.execute(f"SELECT * FROM dm_profiles WHERE profile_name='{profile_name}'")
-    rows = c.fetchall()
-
-    messages = []
-    for row in rows:
-        messages.append(row[1])
-
-    return messages
-
-
-def close_conn():
-    conn.close()
+    def close_conn(self):
+        self.c.close()
+        self.conn.close()
