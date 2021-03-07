@@ -4,7 +4,7 @@ import logging
 
 logging.basicConfig(filename='../logfile.log', level=logging.WARNING, format='%(asctime)s %(message)s', datefmt='%d/%m/%Y %H:%M:%S')
 
-conn = psycopg2.connect("dbname=instabot user=postgres password=postgres")
+conn = psycopg2.connect("dbname=instabot user=anilzeybek")
 c = conn.cursor()
 
 
@@ -78,6 +78,17 @@ def add_user(user):
         logging.warning(f"{user} has been added to users")
     except:
         pass
+
+
+def get_dm_profile(profile_name):
+    c.execute(f"SELECT * FROM dm_profiles WHERE profile_name='{profile_name}'")
+    rows = c.fetchall()
+
+    messages = []
+    for row in rows:
+        messages.append(row[1])
+
+    return messages
 
 
 def close_conn():

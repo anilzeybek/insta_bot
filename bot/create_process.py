@@ -6,7 +6,7 @@ from post_page import PostPage
 from hashtag_page import HashtagPage
 from dm_page import DmPage
 import random
-from database_utils import add_blacklist, in_blacklist, find_follow_requests, delete_follow_request, add_user
+from database_utils import add_blacklist, in_blacklist, find_follow_requests, delete_follow_request, add_user, get_dm_profile
 from datetime import datetime
 from time import sleep
 import sys
@@ -234,12 +234,12 @@ def main():
             look_followers = json_content["lookFollowers"]
             how_many_followers = json_content["howManyFollowers"]
             keywords = json_content["keywords"].split("\n")
-            messages = json_content["messages"]
-            messages_init = json_content["messages"]
+            messages = get_dm_profile(json_content["dmProfile"])
+            messages_init = get_dm_profile(json_content["dmProfile"])
 
             daily_request_limit = json_content["requestLimit"]
             daily_like_limit = json_content["likeLimit"]
-            daily_dm_limit = json_content["dmLimit"]
+            daily_dm_limit = len(messages_init)
 
             create_process(login_user, login_password, look_followers, how_many_followers,
                            keywords, daily_request_limit, daily_like_limit, daily_dm_limit)
