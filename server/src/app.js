@@ -83,6 +83,10 @@ app.post('/requests', (req, res) => {
     createProcess(req.body)
 })
 
+app.get("/hashtagProcess", (req, res) => {
+    res.render("hashtagProcess")
+})
+
 app.get('/download', async (req, res) => {
     const blacklist = await databaseUtils.getBlacklist()
     fs.writeFileSync("./blacklist.json", JSON.stringify(blacklist.rows))

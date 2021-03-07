@@ -175,7 +175,7 @@ def undo_request(login_user, login_password, days):
 def find_hashtags(login_user, login_password, hashtags):
     login_page = LoginPage(browser, login_user, login_password)
     hashtag_page = HashtagPage(browser)
-    post_page = PostPage(browser, login_user)
+    post_page = PostPage(browser, login_user, database_utils)
 
     login_page.login()
 

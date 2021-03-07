@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <title>Hashtag üzerinden yeni kişiler bul</title>
+</head>
+
+<body>
+
+{{>navbar}}
+
+<form>
+    <ul class="form-style-1">
+        <li>
+            <label>Giriş yapılacak hesap bilgileri</label>
+            <input type="text" class="field-divided" placeholder="Kullanıcı adı" id="username"/>
+            <input type="password" class="field-divided" placeholder="Şifre" id="password"/>
+        </li>
+        <li id="hashtagsLi">
+            <label>Hashtagler</label>
+            <textarea class="field-long field-textarea" id="hashtags"></textarea>
+        </li>
+        <li>
+            <input type="submit" value="Botu başlat!"/>
+        </li>
+    </ul>
+</form>
+
+<script src="js/hashtagProcess.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+</body>
+
+</html>
