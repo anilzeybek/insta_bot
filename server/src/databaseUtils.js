@@ -1,9 +1,10 @@
 const {Client} = require("pg")
 const client = new Client({
-    user: 'postgres',
+    // user: 'postgres',
+    user: 'anilzeybek',
     host: 'localhost',
     database: 'instabot',
-    password: 'postgres',
+    // password: 'postgres',
     port: 5432,
 });
 client.connect();
@@ -58,9 +59,29 @@ async function removeUser(username) {
     await client.query(`DELETE FROM users WHERE account=${username}`)
 }
 
+async function getDmProfiles() {
+    try {
+        const res = await client.query(`SELECT * FROM dm_profiles`)
+
+        const result = {}
+        res.rows.forEach(row => {
+            if (row[0] in result)  {
+                result[row[0]] = [row[1]]
+            } else {
+                result[row[0]].push(row[1])
+            }
+        })
+
+        return result
+    } catch (err) {
+        console.log(err.stack);
+    }
+}
+
 exports.getLikes = getLikes
 exports.getRequests = getRequests
 exports.getDm = getDm
 exports.getBlacklist = getBlacklist
 exports.getUsers = getUsers
 exports.removeUser = removeUser
+exports.getDmProfiles = getDmProfiles

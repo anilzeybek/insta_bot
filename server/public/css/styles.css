@@ -6,20 +6,6 @@ div.sticky {
     padding-top: 70px;
 }
 
-.password-bs {
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    border: 1px solid #BEBEBE;
-    padding: 7px;
-    margin: 0;
-    -webkit-transition: all 0.30s ease-in-out;
-    -moz-transition: all 0.30s ease-in-out;
-    -ms-transition: all 0.30s ease-in-out;
-    -o-transition: all 0.30s ease-in-out;
-    outline: none;
-}
-
 a.hashtag-link:link {
     color: red;
     text-decoration: none;
@@ -72,6 +58,7 @@ header a {
 .form-style-1 input[type=time],
 .form-style-1 input[type=url],
 .form-style-1 input[type=email],
+.form-style-1 input[type=password],
 textarea,
 select {
     box-sizing: border-box;

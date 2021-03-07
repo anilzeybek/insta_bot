@@ -117,6 +117,20 @@ app.get("/downloadUsers", async (req, res) => {
     res.download('./users.txt')
 })
 
+app.get("/dmProfile", async (req, res) => {
+    const profiles = await databaseUtils.getDmProfiles()
+    res.render("dmProfile", profiles)
+})
+
+app.get("/createDmProfile", async (req, res) => {
+    res.render("createDmProfile")
+})
+
+app.post("/createDmProfile", async (req, res) => {
+    await databaseUtils.addDmProfile(req.body.data)
+    res.send({})
+})
+
 app.get('*', (req, res) => {
     res.send('404')
 })

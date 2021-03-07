@@ -6,30 +6,12 @@ const hashtagsLi = document.querySelector('#hashtagsLi')
 const hashtags = document.querySelector('#hashtags')
 const requestLimit = document.querySelector('#requestLimit')
 const likeLimit = document.querySelector('#likeLimit')
-const dmLimit = document.querySelector("#dmLimit")
 const targets = document.querySelector('#targets')
 const lookFollowers = document.querySelector('#lookFollowers')
 const howManyFollowers = document.querySelector("#howManyFollowers")
 const keywords = document.querySelector('#keywords')
 const minTime = document.querySelector('#minTime')
 const maxTime = document.querySelector('#maxTime')
-const messageArea = document.querySelector(".message-area")
-
-dmLimit.addEventListener('keyup', async e => {
-    e.preventDefault()
-
-    let messages = document.querySelectorAll(".messages")
-    if (messages.length < parseInt(dmLimit.value)) {
-        for (let i = 0; i < parseInt(dmLimit.value) - messages.length; i++) {
-            const textArea = document.createElement("textarea")
-            textArea.classList.add("field-long")
-            textArea.classList.add("field-textarea")
-            textArea.classList.add("messages")
-
-            messageArea.appendChild(textArea)
-        }
-    }
-})
 
 lookFollowers.addEventListener('change', async e => {
     if (lookFollowers.checked) {
@@ -73,25 +55,19 @@ processForm.addEventListener('submit', async e => {
         })
         
     } else {
-        let messages = document.querySelectorAll(".messages")
         // TODO: kullanıcının girdiği değerleri kontrol et
-    
-        const messageValues = []
-        messages.forEach(message => messageValues.push(message.value))
     
         const data = {
             username: username.value,
             password: password.value,
             requestLimit: parseInt(requestLimit.value),
             likeLimit: parseInt(likeLimit.value),
-            dmLimit: parseInt(dmLimit.value),
             minTime: parseInt(minTime.value),
             maxTime: parseInt(maxTime.value),
             targets: targets.value,
             keywords: keywords.value,
             lookFollowers: lookFollowers.checked,
             howManyFollowers: parseInt(howManyFollowers.value) || 10,
-            messages: messageValues
         }
 
         await fetch(`/process`, {
