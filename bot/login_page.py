@@ -1,6 +1,7 @@
 from time import sleep
 import sys
 import logging
+import common
 
 
 logging.basicConfig(filename='../logfile.log', level=logging.WARNING, format='%(asctime)s %(message)s', datefmt='%d/%m/%Y %H:%M:%S')
@@ -30,9 +31,7 @@ class LoginPage:
             logging.warning("Unusual Login ERROR")
             sys.exit(1)
 
-        not_now_button = self.browser.find_elements_by_xpath("//button[text()='Not Now']")
-        if not_now_button:
-            not_now_button[0].click()
+        common.not_now(self.browser)
 
         logging.warning("Successfully logged in")
         sleep(3)

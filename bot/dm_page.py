@@ -1,4 +1,5 @@
 from time import sleep
+import common
 
 
 class DmPage:
@@ -13,6 +14,8 @@ class DmPage:
 
         username_input = self.browser.find_element_by_xpath("//input[@placeholder='Search...']")
         username_input.send_keys(user)
+
+        common.not_now(self.browser)
 
         user_link = self.browser.find_element_by_xpath(f"//div[text()='{user}']")
         user_link.click()
