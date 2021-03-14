@@ -6,7 +6,7 @@ import uuid
 class DatabaseUtils:
     def __init__(self):
         logging.basicConfig(filename='../logfile.log', level=logging.WARNING, format='%(asctime)s %(message)s', datefmt='%d/%m/%Y %H:%M:%S')
-        self.conn = psycopg2.connect(dbname="instabot", user="postgres", password="postgres")
+        self.conn = psycopg2.connect(dbname="instabot", user="postgres", host="localhost", password="postgres")
         self.c = self.conn.cursor()
 
         logging.warning(self.conn)
