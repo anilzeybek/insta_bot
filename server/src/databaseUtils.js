@@ -58,7 +58,7 @@ async function getUsers() {
 }
 
 async function removeUser(username) {
-    await client.query(`DELETE FROM users WHERE account=${username}`)
+    await client.query(`DELETE FROM users WHERE account='${username}'`)
 }
 
 async function getDmProfiles() {
