@@ -36,7 +36,7 @@ user_list = []
 messages_init = []
 messages = []
 
-database_utils = DatabaseUtils()
+database_utils = DatabaseUtils(local=sys.argv[1] == "local")
 
 
 def like_or_follow_request_or_dm(user_page, post_page, dm_page, target_users):
