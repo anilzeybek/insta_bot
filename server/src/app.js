@@ -29,7 +29,7 @@ app.use(bodyParser.json())
 const password = fs.readFileSync("./password.txt")
 app.use(basicAuth({
     challenge: true,
-    users: { 'admin': password.toString() }
+    users: { 'miyuistanbul': password.toString() }
 }));
 
 
