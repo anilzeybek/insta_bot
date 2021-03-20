@@ -4,13 +4,8 @@ const { Client } = require("pg")
 
 
 
-<<<<<<< HEAD
-const user = process.argv[2] == "local" ? "goeku" : "goeku"
-const password = process.argv[2] == "local" ? undefined : "goeku"
-=======
 const user = process.argv[2] == "local" ? "goeku" : "postgres"
 const password = process.argv[2] == "local" ? undefined : "postgres"
->>>>>>> a2ad6dda6a2c4286ed35593c95872c94afb07b50
 const client = new Client({
     user,
     host: 'localhost',

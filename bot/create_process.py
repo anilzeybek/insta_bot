@@ -44,11 +44,7 @@ for arg in sys.argv:
     else:
         client_id = arg
 
-<<<<<<< HEAD
-database_utils = DatabaseUtils(client_id = client_id, local = local)
-=======
 database_utils = DatabaseUtils(client_id=client_id, local=local)
->>>>>>> a2ad6dda6a2c4286ed35593c95872c94afb07b50
 
 
 def like_or_follow_request_or_dm(user_page, post_page, dm_page, target_users):

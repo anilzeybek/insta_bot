@@ -54,8 +54,9 @@ app.use(express.static(publicDirPath))
 app.use(bodyParser.json())
 
 app.use(
-    session({ 
+    session({
         secret: 'secret',
+    })
 );
 
 app.use(passport.initialize())
@@ -81,20 +82,20 @@ app.get('/bot', checkNotAuthenticated, (req, res) => {
     res.render("botindex", runningProcesses)
 })
 
-app.get("/clients/register", 
+app.get("/clients/register",
     basicAuth({
         challenge: true,
         users: { 'admin': passwordadm.toString() }
     }), (req, res) => {
-    res.render("register");
-})
+        res.render("register");
+    })
 
 app.get("/clients/login", checkAuthenticated, (req, res) => {
     res.render("login");
 })
 
-app.post('/clients/register', async (req, res) =>{
-    let { email, password, password2} = req.body;
+app.post('/clients/register', async (req, res) => {
+    let { email, password, password2 } = req.body;
 
     console.log({
         email,
@@ -104,21 +105,21 @@ app.post('/clients/register', async (req, res) =>{
 
     let errors = [];
 
-    if (!email || !password || !password2){
-        errors.push({message: "Lütfen tüm alanları doldurun."})
+    if (!email || !password || !password2) {
+        errors.push({ message: "Lütfen tüm alanları doldurun." })
     }
 
-    if (password.length < 6){
-        errors.push({message: "Şifre en az 6 karakter olmalı."})
+    if (password.length < 6) {
+        errors.push({ message: "Şifre en az 6 karakter olmalı." })
     }
 
-    if (password != password2){
-        errors.push({message: "Şifre onay aynı değil."})
+    if (password != password2) {
+        errors.push({ message: "Şifre onay aynı değil." })
     }
 
-    if (errors.length > 0){
-        res.render('register', {errors})
-    }else {
+    if (errors.length > 0) {
+        res.render('register', { errors })
+    } else {
         let hashedPassword = await bcrypt.hash(password, 10);
         console.log(hashedPassword);
 
@@ -131,15 +132,15 @@ app.post('/clients/register', async (req, res) =>{
                 }
                 console.log(results.rows);
 
-                if (results.rows.length > 0 ){
-                    errors.push({message: "Email zaten kayıtlı"});
-                    res.render('register', {errors});
-                }else{
+                if (results.rows.length > 0) {
+                    errors.push({ message: "Email zaten kayıtlı" });
+                    res.render('register', { errors });
+                } else {
                     client.query(
-                        'INSERT INTO clients (email, password) VALUES ($1, $2) RETURNING id, password', 
-                        [email, hashedPassword], 
+                        'INSERT INTO clients (email, password) VALUES ($1, $2) RETURNING id, password',
+                        [email, hashedPassword],
                         (err, results) => {
-                            if (err){
+                            if (err) {
                                 throw err
                             }
                             console.log(results.rows);
@@ -153,13 +154,12 @@ app.post('/clients/register', async (req, res) =>{
     }
 })
 
-app.post("/clients/login", 
+app.post("/clients/login",
     passport.authenticate("local", {
         failureRedirect: "/clients/login",
         failureFlash: true
     }),
     async (req, res) => {
-        //console.log("@@@" + req.user.id)
         client_id = req.user.id
         res.redirect('/bot')
     }
@@ -274,15 +274,15 @@ app.get('*', (req, res) => {
 })
 
 
-function checkAuthenticated(req, res, next){
-    if(req.isAuthenticated()){
+function checkAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
         return res.redirect("/bot");
     }
     next();
 }
 
-function checkNotAuthenticated(req, res, next){
-    if (req.isAuthenticated()){
+function checkNotAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
         return next()
     }
     res.redirect("/clients/login");
