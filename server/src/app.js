@@ -52,6 +52,7 @@ hbs.registerPartials(partialsPath)
 
 app.use(express.static(publicDirPath))
 app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(
     session({

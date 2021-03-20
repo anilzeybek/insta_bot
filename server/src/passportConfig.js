@@ -1,6 +1,6 @@
 const LocalStrategy = require('passport-local').Strategy;
 const { Client } = require("pg")
-const user = process.argv[2] == "local" ? "goeku" : "postgres"
+const user = process.argv[2] == "local" ? "postgres" : "postgres"
 const password = process.argv[2] == "local" ? undefined : "postgres"
 const client = new Client({
     user,
