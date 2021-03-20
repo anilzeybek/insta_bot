@@ -12,23 +12,6 @@ const flash = require('express-flash')
 const passport = require('passport')
 
 
-
-
-
-const { Client } = require("pg")
-const user = process.argv[2] == "local" ? "anilzeybek" : "postgres"
-const password = process.argv[2] == "local" ? undefined : "postgres"
-const client = new Client({
-    user,
-    host: 'localhost',
-    database: 'instabot',
-    password,
-    port: 5432,
-});
-client.connect();
-
-
-
 const initializePassport = require('./passportConfig')
 initializePassport(passport);
 
@@ -124,34 +107,7 @@ app.post('/clients/register', async (req, res) => {
         let hashedPassword = await bcrypt.hash(password, 10);
         console.log(hashedPassword);
 
-        client.query(
-            "SELECT * FROM clients WHERE email = $1",
-            [email],
-            (err, results) => {
-                if (err) {
-                    throw err;
-                }
-                console.log(results.rows);
-
-                if (results.rows.length > 0) {
-                    errors.push({ message: "Email zaten kayıtlı" });
-                    res.render('register', { errors });
-                } else {
-                    client.query(
-                        'INSERT INTO clients (email, password) VALUES ($1, $2) RETURNING id, password',
-                        [email, hashedPassword],
-                        (err, results) => {
-                            if (err) {
-                                throw err
-                            }
-                            console.log(results.rows);
-                            req.flash('success_msg', "Kayıt oldunuz. Giriş yapabilirsiniz.");
-                            res.redirect("login");
-                        }
-                    )
-                }
-            }
-        );
+        databaseUtils.registerClient(email, hashedPassword, req, res);
     }
 })
 
