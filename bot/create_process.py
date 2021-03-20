@@ -29,8 +29,6 @@ firefox_profile = webdriver.FirefoxProfile()
 firefox_profile.set_preference('permissions.default.image', 2)
 firefox_profile.set_preference('dom.ipc.plugins.enabled.libflashplayer.so', 'false')
 
-browser = webdriver.Firefox(options=options, executable_path="../geckodriver_mac", service_log_path='/dev/null', firefox_profile=firefox_profile)
-browser.implicitly_wait(3)
 
 user_list = []
 messages_init = []
@@ -44,6 +42,10 @@ for arg in sys.argv:
     else:
         client_id = arg
 
+
+gecko_path = "../geckodriver_mac" if local else "../geckodriver_linux"
+browser = webdriver.Firefox(options=options, executable_path=gecko_path, service_log_path='/dev/null', firefox_profile=firefox_profile)
+browser.implicitly_wait(3)
 database_utils = DatabaseUtils(client_id=client_id, local=local)
 
 
