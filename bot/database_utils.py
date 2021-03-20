@@ -9,7 +9,7 @@ class DatabaseUtils:
         if local:
             self.conn = psycopg2.connect(dbname="instabot", user="goeku", host="localhost", password="goeku")
         else:
-            self.conn = psycopg2.connect(dbname="instabot", user="goeku", host="localhost", password="goeku")
+            self.conn = psycopg2.connect(dbname="instabot", user="postgres", host="localhost", password="postgres")
         self.c = self.conn.cursor()
 
         logging.warning(self.conn)
