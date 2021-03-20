@@ -1,7 +1,11 @@
 const { Client } = require("pg")
 
-const user = process.argv[2] == "local" ? "anilzeybek" : "postgres"
-const password = process.argv[2] == "local" ? undefined : "postgres"
+//require("dotenv").config();
+
+
+
+const user = process.argv[2] == "local" ? "goeku" : "goeku"
+const password = process.argv[2] == "local" ? undefined : "goeku"
 const client = new Client({
     user,
     host: 'localhost',
@@ -12,58 +16,58 @@ const client = new Client({
 client.connect();
 
 
-async function getLikes() {
+async function getLikes(client_id) {
     try {
-        const res = await client.query("SELECT * FROM likes");
+        const res = await client.query(`SELECT * FROM likes WHERE client_id='${client_id}'`);
         return res;
     } catch (err) {
         console.log(err.stack);
     }
 }
 
-async function getRequests() {
+async function getRequests(client_id) {
     try {
-        const res = await client.query("SELECT * FROM follow_requests");
+        const res = await client.query(`SELECT * FROM follow_requests WHERE client_id='${client_id}'`);
         return res;
     } catch (err) {
         console.log(err.stack);
     }
 }
 
-async function getDm() {
+async function getDm(client_id) {
     try {
-        const res = await client.query("SELECT * FROM dm");
+        const res = await client.query(`SELECT * FROM dm WHERE client_id='${client_id}'`);
         return res;
     } catch (err) {
         console.log(err.stack);
     }
 }
 
-async function getBlacklist() {
+async function getBlacklist(client_id) {
     try {
-        const res = await client.query("SELECT * FROM blacklist");
+        const res = await client.query(`SELECT * FROM blacklist WHERE client_id='${client_id}'`);
         return res;
     } catch (err) {
         console.log(err.stack);
     }
 }
 
-async function getUsers() {
+async function getUsers(client_id) {
     try {
-        const res = await client.query("SELECT * FROM users");
+        const res = await client.query(`SELECT * FROM users WHERE client_id='${client_id}'`);
         return res;
     } catch (err) {
         console.log(err.stack);
     }
 }
 
-async function removeUser(username) {
-    await client.query(`DELETE FROM users WHERE account='${username}'`)
+async function removeUser(username, client_id) {
+    await client.query(`DELETE FROM users WHERE account='${username}' AND client_id='${client_id}'`)
 }
 
-async function getDmProfiles() {
+async function getDmProfiles(client_id) {
     try {
-        const res = await client.query(`SELECT * FROM dm_profiles`)
+        const res = await client.query(`SELECT * FROM dm_profiles WHERE client_id='${client_id}'`)
 
         const result = {}
         res.rows.forEach(row => {
@@ -80,15 +84,15 @@ async function getDmProfiles() {
     }
 }
 
-async function addDmProfile(profile) {
+async function addDmProfile(profile, client_id) {
     for (const message of profile.messages) {
-        await client.query(`INSERT INTO dm_profiles(profile_name, dm_message) VALUES('${profile.profileName}', '${message}')`)
+        await client.query(`INSERT INTO dm_profiles(profile_name, dm_message, client_id) VALUES('${profile.profileName}', '${message}', ${client_id})`)
     }
 }
 
-async function getSummaries() {
+async function getSummaries(client_id) {
     try {
-        const res = await client.query(`SELECT * FROM summary`)
+        const res = await client.query(`SELECT * FROM summary WHERE client_id='${client_id}'`)
         return res
     } catch (err) {
         console.log(err.stack);

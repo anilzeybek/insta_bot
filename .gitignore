@@ -1,6 +1,5 @@
 **/__pycache__
 **/node_modules
-**/geckodriver
 **/.vscode
 **/.idea
 **/options.json

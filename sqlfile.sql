@@ -24,10 +24,18 @@ SET default_table_access_method = heap;
 -- Name: blacklist; Type: TABLE; Schema: public; Owner: anilzeybek
 --
 
+CREATE TABLE public.clients (
+    id BIGSERIAL PRIMARY KEY NOT NULL,
+    email VARCHAR(200) NOT NULL,
+    password VARCHAR(200) NOT NULL,
+    UNIQUE (email)
+);
+
 CREATE TABLE public.blacklist (
     account text,
     request_declined integer,
-    blacklist_date date DEFAULT now()
+    blacklist_date date DEFAULT now(),
+    client_id BIGSERIAL
 );
 
 
@@ -39,7 +47,8 @@ CREATE TABLE public.dm (
     sender_account text,
     sent_account text,
     message text,
-    dm_date date DEFAULT now()
+    dm_date date DEFAULT now(),
+    client_id BIGSERIAL
 );
 
 
@@ -49,7 +58,8 @@ CREATE TABLE public.dm (
 
 CREATE TABLE public.dm_profiles (
     profile_name text,
-    dm_message text
+    dm_message text,
+    client_id BIGSERIAL
 );
 
 
@@ -62,7 +72,8 @@ CREATE TABLE public.follow_requests (
     requested_account text,
     accepted integer,
     declined integer,
-    request_date date DEFAULT now()
+    request_date date DEFAULT now(),
+    client_id BIGSERIAL
 );
 
 
@@ -73,7 +84,8 @@ CREATE TABLE public.follow_requests (
 CREATE TABLE public.likes (
     liker_account text,
     liked_account text,
-    like_date date DEFAULT now()
+    like_date date DEFAULT now(),
+    client_id BIGSERIAL
 );
 
 
@@ -87,7 +99,8 @@ CREATE TABLE public.summary (
     sent_likes integer,
     sent_requests integer,
     sent_dm integer,
-    end_date date DEFAULT now()
+    end_date date DEFAULT now(),
+    client_id BIGSERIAL
 );
 
 
@@ -96,7 +109,8 @@ CREATE TABLE public.summary (
 --
 
 CREATE TABLE public.users (
-    account text
+    account text,
+    client_id BIGSERIAL
 );
 
 

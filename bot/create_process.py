@@ -23,7 +23,7 @@ MAX_TIME = 0
 
 logging.basicConfig(filename='../logfile.log', level=logging.WARNING, format='%(asctime)s %(message)s', datefmt='%d/%m/%Y %H:%M:%S')
 options = Options()
-options.headless = False if len(sys.argv) == 2 else True
+options.headless = True
 
 firefox_profile = webdriver.FirefoxProfile()
 firefox_profile.set_preference('permissions.default.image', 2)
@@ -36,10 +36,15 @@ user_list = []
 messages_init = []
 messages = []
 
-if len(sys.argv) >= 2:
-    database_utils = DatabaseUtils(local=sys.argv[1] == "local")
-else:
-    database_utils = DatabaseUtils()
+local = False
+client_id = -1
+for arg in sys.argv:
+    if arg == 'local':
+        local = True
+    else:
+        client_id = arg
+
+database_utils = DatabaseUtils(client_id = client_id, local = local)
 
 
 def like_or_follow_request_or_dm(user_page, post_page, dm_page, target_users):
