@@ -53,15 +53,9 @@ hbs.registerPartials(partialsPath)
 app.use(express.static(publicDirPath))
 app.use(bodyParser.json())
 
-app.use(express.urlencoded({extended: false}));
 app.use(
     session({ 
         secret: 'secret',
-
-        resave: false,
-
-        saveUninitialized: false
-    })
 );
 
 app.use(passport.initialize())
@@ -231,10 +225,10 @@ app.get("/settings", checkNotAuthenticated, (req, res) => {
     res.render("settings")
 })
 
-app.post("/settings", (req, res) => {
-    res.send({})
-    fs.writeFileSync("./password.txt", req.body.newPassword)
-})
+// app.post("/settings", (req, res) => {
+//     res.send({})
+//     fs.writeFileSync("./password.txt", req.body.newPassword)
+// })
 
 app.get("/hashtag", checkNotAuthenticated, async (req, res) => {
     const users = await databaseUtils.getUsers(client_id)
