@@ -2,8 +2,6 @@ const { Client } = require("pg")
 
 //require("dotenv").config();
 
-
-
 const user = process.argv[2] == "local" ? "anilzeybek" : "postgres"
 const password = process.argv[2] == "local" ? undefined : "postgres"
 const client = new Client({

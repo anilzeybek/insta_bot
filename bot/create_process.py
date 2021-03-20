@@ -21,14 +21,6 @@ REMAINING_DM = 0
 MIN_TIME = 0
 MAX_TIME = 0
 
-logging.basicConfig(filename='../logfile.log', level=logging.WARNING, format='%(asctime)s %(message)s', datefmt='%d/%m/%Y %H:%M:%S')
-options = Options()
-options.headless = True
-
-firefox_profile = webdriver.FirefoxProfile()
-firefox_profile.set_preference('permissions.default.image', 2)
-firefox_profile.set_preference('dom.ipc.plugins.enabled.libflashplayer.so', 'false')
-
 
 user_list = []
 messages_init = []
@@ -42,6 +34,13 @@ for arg in sys.argv:
     else:
         client_id = arg
 
+logging.basicConfig(filename='../logfile.log', level=logging.WARNING, format='%(asctime)s %(message)s', datefmt='%d/%m/%Y %H:%M:%S')
+options = Options()
+options.headless = not local
+
+firefox_profile = webdriver.FirefoxProfile()
+firefox_profile.set_preference('permissions.default.image', 2)
+firefox_profile.set_preference('dom.ipc.plugins.enabled.libflashplayer.so', 'false')
 
 gecko_path = "../geckodriver_mac" if local else "../geckodriver_linux"
 browser = webdriver.Firefox(options=options, executable_path=gecko_path, service_log_path='/dev/null', firefox_profile=firefox_profile)

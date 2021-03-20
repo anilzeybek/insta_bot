@@ -7,7 +7,7 @@ class DatabaseUtils:
     def __init__(self, client_id, local=False):
         logging.basicConfig(filename='../logfile.log', level=logging.WARNING, format='%(asctime)s %(message)s', datefmt='%d/%m/%Y %H:%M:%S')
         if local:
-            self.conn = psycopg2.connect(dbname="instabot", user="postgres", host="localhost", password="postgres")
+            self.conn = psycopg2.connect(dbname="instabot", user="anilzeybek", host="localhost")
         else:
             self.conn = psycopg2.connect(dbname="instabot", user="postgres", host="localhost", password="postgres")
         self.c = self.conn.cursor()
