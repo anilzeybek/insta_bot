@@ -140,3 +140,4 @@ exports.removeUser = removeUser
 exports.getDmProfiles = getDmProfiles
 exports.addDmProfile = addDmProfile
 exports.getSummaries = getSummaries
+exports.registerClient = registerClient
