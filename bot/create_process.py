@@ -26,6 +26,8 @@ user_list = []
 messages_init = []
 messages = []
 
+logging.basicConfig(filename='../logfile.log', level=logging.WARNING, format='%(asctime)s %(message)s', datefmt='%d/%m/%Y %H:%M:%S')
+
 local = False
 client_id = -1
 for arg in sys.argv:
@@ -34,7 +36,6 @@ for arg in sys.argv:
     else:
         client_id = arg
 
-logging.basicConfig(filename='../logfile.log', level=logging.WARNING, format='%(asctime)s %(message)s', datefmt='%d/%m/%Y %H:%M:%S')
 options = Options()
 options.headless = not local
 

@@ -8,7 +8,7 @@ function createProcess(data, client_id) {
     const spawn = require("child_process").spawn;
     const arguments = ["../bot/create_process.py", client_id]
     if (process.argv[2] == "local")
-        arguments.push("true")
+        arguments.push("local")
     const pythonProcess = spawn('python3', arguments);
 
     runningProcesses.push({
