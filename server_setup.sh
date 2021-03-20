@@ -11,4 +11,7 @@ sudo npm i
 cd ..
 sudo -u postgres createdb instabot
 sudo -u postgres psql instabot < instabot.sql
-chmod +x geckodriver
+chmod +x geckodriver_linux
+
+# database sifresini postgres yap:
+# ALTER USER postgres PASSWORD 'postgres';

@@ -7,9 +7,9 @@ class DatabaseUtils:
     def __init__(self, client_id, local=False):
         logging.basicConfig(filename='../logfile.log', level=logging.WARNING, format='%(asctime)s %(message)s', datefmt='%d/%m/%Y %H:%M:%S')
         if local:
-            self.conn = psycopg2.connect(dbname="instabot", user="postgres", host="localhost", password="postgres")
+            self.conn = psycopg2.connect(dbname="instabot", user="anilzeybek", host="localhost")
         else:
-            self.conn = psycopg2.connect(dbname="instabot", user="postgres", host="localhost", password="postgres")
+            self.conn = psycopg2.connect(dbname="instabot", user="anilzeybek", host="localhost")
         self.c = self.conn.cursor()
 
         logging.warning(self.conn)
@@ -18,7 +18,6 @@ class DatabaseUtils:
         self.client_id = client_id
 
     def add_like(self, liker_account, liked_account):
-        # TODO: hata firlatiyor
         self.c.execute(f"INSERT INTO likes (liker_account, liked_account, client_id) VALUES ('{liker_account}', '{liked_account}', '{self.client_id}');")
         self.conn.commit()
 

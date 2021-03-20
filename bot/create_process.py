@@ -23,13 +23,13 @@ MAX_TIME = 0
 
 logging.basicConfig(filename='../logfile.log', level=logging.WARNING, format='%(asctime)s %(message)s', datefmt='%d/%m/%Y %H:%M:%S')
 options = Options()
-options.headless = True
+options.headless = False
 
 firefox_profile = webdriver.FirefoxProfile()
 firefox_profile.set_preference('permissions.default.image', 2)
 firefox_profile.set_preference('dom.ipc.plugins.enabled.libflashplayer.so', 'false')
 
-browser = webdriver.Firefox(options=options, executable_path="../geckodriver", service_log_path='/dev/null', firefox_profile=firefox_profile)
+browser = webdriver.Firefox(options=options, executable_path="../geckodriver_mac", service_log_path='/dev/null', firefox_profile=firefox_profile)
 browser.implicitly_wait(3)
 
 user_list = []
