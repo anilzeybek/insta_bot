@@ -40,7 +40,7 @@ function getProcesses(client_id) {
     let index;
     for (index = 0; index < runningProcesses.length; ++index) {
         if (String(runningProcesses[index].client_id) === String(client_id)){
-            console.log(runningProcesses[index]);
+            //console.log(runningProcesses[index]);
             processes.push(runningProcesses[index]);
         }
     }
