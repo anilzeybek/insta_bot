@@ -2,11 +2,11 @@ const fs = require('fs');
 
 let runningProcesses = []
 
-function createProcess(data) {
+function createProcess(data, client_id) {
     fs.writeFileSync("../options.json", JSON.stringify(data))
 
     const spawn = require("child_process").spawn;
-    const arguments = ["../bot/create_process.py"]
+    const arguments = ["../bot/create_process.py", client_id]
     if (process.argv[2] == "local")
         arguments.push("true")
     const pythonProcess = spawn('python3', arguments);
