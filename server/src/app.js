@@ -16,8 +16,8 @@ const passport = require('passport')
 
 
 const { Client } = require("pg")
-const user = process.argv[2] == "local" ? "goeku" : "goeku"
-const password = process.argv[2] == "local" ? undefined : "goeku"
+const user = process.argv[2] == "local" ? "postgres" : "postgres"
+const password = process.argv[2] == "local" ? undefined : "postgres"
 const client = new Client({
     user,
     host: 'localhost',
@@ -34,7 +34,7 @@ initializePassport(passport);
 
 
 const app = express()
-const PORT = process.env.PORT || 80
+const PORT = process.env.PORT || 3000
 
 // Defining paths for Express config
 const publicDirPath = path.join(__dirname, '../public')
