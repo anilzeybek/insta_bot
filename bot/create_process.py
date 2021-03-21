@@ -63,7 +63,7 @@ def like_or_follow_request_or_dm(user_page, post_page, dm_page, target_users):
                 result = post_page.like_post(user)
 
                 if result:
-                    database_utils.add_blacklist(user)
+                    # database_utils.add_blacklist(user)
                     REMAINING_LIKES -= 1
 
                     logging.warning(f"liked post of {user}")
@@ -71,7 +71,7 @@ def like_or_follow_request_or_dm(user_page, post_page, dm_page, target_users):
             elif locked_acc and REMAINING_REQUESTS > 0:
                 user_page.send_follow_request(user)
 
-                database_utils.add_blacklist(user)
+                # database_utils.add_blacklist(user)
                 REMAINING_REQUESTS -= 1
 
                 logging.warning(f"follow request sent to {user}")
@@ -79,7 +79,7 @@ def like_or_follow_request_or_dm(user_page, post_page, dm_page, target_users):
             elif locked_acc and REMAINING_DM > 0:
                 dm_page.send_message(user, messages.pop(0))
 
-                database_utils.add_blacklist(user)
+                # database_utils.add_blacklist(user)
                 REMAINING_DM -= 1
 
                 logging.warning(f"dm sent to {user}")
