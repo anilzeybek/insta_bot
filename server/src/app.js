@@ -59,6 +59,11 @@ app.get('/', checkAuthenticated, (req, res) => {
     res.render("login")
 })
 
+app.get('/logout', function(req, res){
+  req.logout();
+  res.redirect('/');
+});
+
 app.get('/bot', checkNotAuthenticated, (req, res) => {
     const runningProcesses = getProcesses(req.user.id)
     res.render("botindex", runningProcesses)
