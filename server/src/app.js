@@ -112,8 +112,11 @@ app.post('/clients/register', async (req, res) => {
 })
 
 app.post("/clients/login",
-    passport.authenticate("local"),
-    function (req, res){
+    passport.authenticate("local", {
+        failureRedirect: "/clients/login",
+        failureFlash: true
+    }),
+    async (req, res) => {
         client_id = req.user.id
         res.redirect('/bot')
     }
