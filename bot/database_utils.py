@@ -21,7 +21,7 @@ class DatabaseUtils:
         self.c.execute(f"INSERT INTO likes (liker_account, liked_account, client_id) VALUES ('{liker_account}', '{liked_account}', '{self.client_id}');")
         self.conn.commit()
 
-        self.upsert_summary(liker_account, "sent_likes")
+        # self.upsert_summary(liker_account, "sent_likes")
 
         logging.warning(f"{liker_account} liked {liked_account}'s post")
 
@@ -95,7 +95,7 @@ class DatabaseUtils:
         sent_dm = 1 if column_name == "sent_dm" else 0
 
         self.c.execute(
-            f"INSERT INTO summary(summary_id, account, sent_likes, sent_requests, sent_dm, client_id) VALUES('{self.UUID}', '{account}', {sent_likes}, {sent_requests}, {sent_dm}, '{self.client_id}') ON CONFLICT (summary_id) DO UPDATE SET {column_name} = summary.{column_name} + 1;")
+            f"INSERT INTO summary(summary_id, account, sent_likes, sent_requests, sent_dm, client_id) VALUES('{self.UUID}', '{account}', {sent_likes}, {sent_requests}, {sent_dm}, {self.client_id}) ON CONFLICT (summary_id) DO UPDATE SET {column_name} = summary.{column_name} + 1;")
         self.conn.commit()
 
     def close_conn(self):
