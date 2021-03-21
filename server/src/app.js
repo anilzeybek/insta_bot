@@ -47,9 +47,6 @@ app.use(passport.session())
 app.use(flash());
 
 
-const passwordadm = fs.readFileSync("./password.txt")
-
-
 app.get('/', checkAuthenticated, (req, res) => {
     res.render("login")
 })
@@ -62,10 +59,10 @@ app.get('/bot', checkNotAuthenticated, (req, res) => {
 app.get("/clients/register",
     basicAuth({
         challenge: true,
-        users: { 'admin': passwordadm.toString() }
+        users: { 'admin': "GokselAnil1234?" }
     }), (req, res) => {
         res.render("register");
-})
+    })
 
 app.get("/clients/login", checkAuthenticated, (req, res) => {
     res.render("login");
