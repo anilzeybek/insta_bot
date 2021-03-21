@@ -48,7 +48,7 @@ function registerClient(email, hashedPassword, req, res) {
 
 async function getLikes(client_id) {
     try {
-        const res = await client.query(`SELECT * FROM likes WHERE client_id='${client_id}'`);
+        const res = await client.query(`SELECT * FROM likes WHERE client_id=${client_id}`);
         return res;
     } catch (err) {
         console.log(err.stack);
@@ -57,7 +57,7 @@ async function getLikes(client_id) {
 
 async function getRequests(client_id) {
     try {
-        const res = await client.query(`SELECT * FROM follow_requests WHERE client_id='${client_id}'`);
+        const res = await client.query(`SELECT * FROM follow_requests WHERE client_id=${client_id}`);
         return res;
     } catch (err) {
         console.log(err.stack);
@@ -66,7 +66,7 @@ async function getRequests(client_id) {
 
 async function getDm(client_id) {
     try {
-        const res = await client.query(`SELECT * FROM dm WHERE client_id='${client_id}'`);
+        const res = await client.query(`SELECT * FROM dm WHERE client_id=${client_id}`);
         return res;
     } catch (err) {
         console.log(err.stack);
@@ -75,7 +75,7 @@ async function getDm(client_id) {
 
 async function getBlacklist(client_id) {
     try {
-        const res = await client.query(`SELECT * FROM blacklist WHERE client_id='${client_id}'`);
+        const res = await client.query(`SELECT * FROM blacklist WHERE client_id=${client_id}`);
         return res;
     } catch (err) {
         console.log(err.stack);
@@ -84,7 +84,7 @@ async function getBlacklist(client_id) {
 
 async function getUsers(client_id) {
     try {
-        const res = await client.query(`SELECT * FROM users WHERE client_id='${client_id}'`);
+        const res = await client.query(`SELECT * FROM users WHERE client_id=${client_id}`);
         return res;
     } catch (err) {
         console.log(err.stack);
@@ -92,12 +92,12 @@ async function getUsers(client_id) {
 }
 
 async function removeUser(username, client_id) {
-    await client.query(`DELETE FROM users WHERE account='${username}' AND client_id='${client_id}'`)
+    await client.query(`DELETE FROM users WHERE account='${username}' AND client_id=${client_id}`)
 }
 
 async function getDmProfiles(client_id) {
     try {
-        const res = await client.query(`SELECT * FROM dm_profiles WHERE client_id='${client_id}'`)
+        const res = await client.query(`SELECT * FROM dm_profiles WHERE client_id=${client_id}`)
 
         const result = {}
         res.rows.forEach(row => {
@@ -122,7 +122,7 @@ async function addDmProfile(profile, client_id) {
 
 async function getSummaries(client_id) {
     try {
-        const res = await client.query(`SELECT * FROM summary WHERE client_id='${client_id}'`)
+        const res = await client.query(`SELECT * FROM summary WHERE client_id=${client_id}`)
         return res
     } catch (err) {
         console.log(err.stack);
