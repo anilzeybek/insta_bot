@@ -15,34 +15,34 @@ client.connect();
 
 
 function registerClient(email, hashedPassword, req, res) {
-  client.query(
-    "SELECT * FROM clients WHERE email = $1",
-    [email],
-    (err, results) => {
-      if (err) {
-        throw err;
-      }
-      console.log(results.rows);
-
-      if (results.rows.length > 0) {
-        errors.push({ message: "Email zaten kayıtlı" });
-        res.render("register", { errors });
-      } else {
-        client.query(
-          "INSERT INTO clients (email, password) VALUES ($1, $2) RETURNING id, password",
-          [email, hashedPassword],
-          (err, results) => {
+    client.query(
+        "SELECT * FROM clients WHERE email = $1",
+        [email],
+        (err, results) => {
             if (err) {
-              throw err;
+                throw err;
             }
             console.log(results.rows);
-            req.flash("success_msg", "Kayıt oldunuz. Giriş yapabilirsiniz.");
-            res.redirect("login");
-          }
-        );
-      }
-    }
-  );
+
+            if (results.rows.length > 0) {
+                errors.push({ message: "Email zaten kayıtlı" });
+                res.render("register", { errors });
+            } else {
+                client.query(
+                    "INSERT INTO clients (email, password) VALUES ($1, $2) RETURNING id, password",
+                    [email, hashedPassword],
+                    (err, results) => {
+                        if (err) {
+                            throw err;
+                        }
+                        console.log(results.rows);
+                        req.flash("success_msg", "Kayıt oldunuz. Giriş yapabilirsiniz.");
+                        res.redirect("login");
+                    }
+                );
+            }
+        }
+    );
 }
 
 

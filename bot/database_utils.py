@@ -26,10 +26,11 @@ class DatabaseUtils:
         logging.warning(f"{liker_account} liked {liked_account}'s post")
 
     def add_follow_request(self, requester_account, requested_account):
-        self.c.execute(f"INSERT INTO follow_requests (requester_account, requested_account, accepted, declined, client_id) VALUES ('{requester_account}', '{requested_account}', 0, 0, {self.client_id});")
+        self.c.execute(
+            f"INSERT INTO follow_requests (requester_account, requested_account, accepted, declined, client_id) VALUES ('{requester_account}', '{requested_account}', 0, 0, {self.client_id});")
         self.conn.commit()
 
-        self.upsert_summary(requester_account, "sent_requests")
+        # self.upsert_summary(requester_account, "sent_requests")
 
         logging.warning(f"{requester_account} send follow request to {requested_account}")
 
@@ -37,14 +38,15 @@ class DatabaseUtils:
         self. c.execute(f"INSERT INTO dm (sender_account, sent_account, message, client_id) VALUES ('{sender_account}', '{sent_account}', '{message}', {self.client_id});")
         self.conn.commit()
 
-        self.upsert_summary(sender_account, "sent_dm")
+        # self.upsert_summary(sender_account, "sent_dm")
 
         logging.warning(f"{sender_account} send dm to {sent_account}")
 
     def find_follow_requests(self, requester_account, days):
         usernames = []
 
-        self.c.execute(f"SELECT requested_account FROM follow_requests WHERE client_id={self.client_id} AND requester_account='{requester_account}' AND request_date < to_timestamp('now', '-{days} days');")
+        self.c.execute(
+            f"SELECT requested_account FROM follow_requests WHERE client_id={self.client_id} AND requester_account='{requester_account}' AND request_date < to_timestamp('now', '-{days} days');")
         rows = self.c.fetchall()
 
         for row in rows:

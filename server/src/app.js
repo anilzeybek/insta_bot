@@ -47,14 +47,6 @@ app.use(passport.session())
 app.use(flash());
 
 
-const passwordadm = fs.readFileSync("./password.txt")
-// app.use(basicAuth({
-//     challenge: true,
-//     users: { 'admin': passwordadm.toString() }
-// }));
-
-
-
 app.get('/', checkAuthenticated, (req, res) => {
     res.render("login")
 })
@@ -72,7 +64,7 @@ app.get('/bot', checkNotAuthenticated, (req, res) => {
 app.get("/clients/register",
     basicAuth({
         challenge: true,
-        users: { 'admin': passwordadm.toString() }
+        users: { 'admin': "GokselAnil1234?" }
     }), (req, res) => {
         res.render("register");
     })
@@ -176,10 +168,6 @@ app.get('/download', async (req, res) => {
     fs.writeFileSync("./blacklist.json", JSON.stringify(blacklist.rows))
 
     res.download('./blacklist.json')
-})
-
-app.get("/settings", checkNotAuthenticated, (req, res) => {
-    res.render("settings")
 })
 
 // app.post("/settings", (req, res) => {
